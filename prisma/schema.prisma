@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// schema.prisma
+
+model User_Role {
+  roleID      Int    @id @default(autoincrement())
+  role_name   String
+  description String
+  users       User[]
+}
+
+model User {
+  userID                      Int                           @id @default(autoincrement())
+  name                        String
+  email                       String
+  password                    String
+  identification              String?
+  phone                       String?
+  role                        Int
+  User_Role                   User_Role                     @relation(fields: [role], references: [roleID])
+  addresses                   User_Address[]
+  Recycling_Center            Recycling_Center[]
+  Recycling_Material_Exchange Recycling_Material_Exchange[]
+  Coupon_Exchange_History     Coupon_Exchange_History[]
+  Client_Eco_Coins            Client_Eco_Coins[]
+}
+
+model Addresses {
+  addressID        Int                @id @default(autoincrement())
+  provinceId       String?
+  province         String?
+  cantonId         String?
+  canton           String?
+  districtId       String?
+  district         String?
+  exact_address    String
+  User_Address     User_Address[]
+  Recycling_Center Recycling_Center[]
+}
+
+model User_Address {
+  user_addressID Int       @id @default(autoincrement())
+  userID         Int
+  addressID      Int
+  User           User      @relation(fields: [userID], references: [userID])
+  Address        Addresses @relation(fields: [addressID], references: [addressID])
+}
+
+model Recycling_Center {
+  centerID             Int                           @id @default(autoincrement())
+  name                 String
+  addressID            Int
+  phone                String?
+  operating_hours      String?
+  status               String
+  administrator_userID Int?
+  User                 User?                         @relation(fields: [administrator_userID], references: [userID])
+  Address              Addresses                     @relation(fields: [addressID], references: [addressID])
+  Center_Material      Center_Material[]
+  material_exchanges   Recycling_Material_Exchange[]
+}
+
+model Recyclable_Material {
+  materialID           Int                           @id @default(autoincrement())
+  name                 String
+  description          String?
+  image                String?
+  unit_of_measure      String?
+  price                Float?
+  color_representation String?
+  Center_Material      Center_Material[]
+  material_exchanges   Recycling_Material_Exchange[]
+}
+
+model Center_Material {
+  center_materialID   Int                 @id @default(autoincrement())
+  centerID            Int
+  materialID          Int
+  Recycling_Center    Recycling_Center    @relation(fields: [centerID], references: [centerID])
+  Recyclable_Material Recyclable_Material @relation(fields: [materialID], references: [materialID])
+}
+
+model Recycling_Material_Exchange {
+  exchangeID          Int                 @id @default(autoincrement())
+  client_userID       Int
+  centerID            Int
+  exchange_date       DateTime
+  materialID          Int
+  quantity            Float
+  eco_coins           Float
+  client_user         User                @relation(fields: [client_userID], references: [userID])
+  Recycling_Center    Recycling_Center    @relation(fields: [centerID], references: [centerID])
+  Recyclable_Material Recyclable_Material @relation(fields: [materialID], references: [materialID])
+}
+
+model Coupon_Exchange {
+  couponID                Int                       @id @default(autoincrement())
+  name                    String
+  description             String?
+  image                   String?
+  category                String?
+  start_validity_date     DateTime?
+  end_validity_date       DateTime?
+  eco_coins_required      Float?
+  Coupon_Exchange_History Coupon_Exchange_History[]
+}
+
+model Coupon_Exchange_History {
+  historyID       Int             @id @default(autoincrement())
+  client_userID   Int
+  couponID        Int
+  exchange_date   DateTime
+  User            User            @relation(fields: [client_userID], references: [userID])
+  Coupon_Exchange Coupon_Exchange @relation(fields: [couponID], references: [couponID])
+}
+
+model Client_Eco_Coins {
+  ecoCoinsID    Int   @id @default(autoincrement())
+  client_userID Int
+  balance       Float
+  User          User  @relation(fields: [client_userID], references: [userID])
+}
