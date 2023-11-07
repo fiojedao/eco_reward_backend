@@ -29,4 +29,22 @@ export const addresses = [
     district: "Liberia",
     exact_address: "222 Calle Norte",
   },
+  {
+    province: "Heredia",
+    canton: "Santa Bárbara",
+    district: "Santo Domingo",
+    exact_address: "333 Avenida Sur",
+  },
+  {
+    province: "Heredia",
+    canton: "San Rafael ",
+    district: "Santiago",
+    exact_address: "444 Carretera Costanera",
+  },
+  {
+    province: "Limón",
+    canton: "Limón",
+    district: "Limón",
+    exact_address: "555 Paseo de los Turistas",
+  },
 ];

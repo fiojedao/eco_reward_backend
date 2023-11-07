@@ -5,4 +5,6 @@ const recyclableMaterialController = require("../controllers/recyclableMaterialC
 
 router.get("/", recyclableMaterialController.get);
 
+router.get("/:id", recyclableMaterialController.getById);
+
 module.exports = router;
