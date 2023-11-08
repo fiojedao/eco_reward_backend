@@ -8,6 +8,7 @@ module.exports.get = async (request, response, next) => {
     },
     include: {
       Address: true,
+      material_exchanges: true,
     },
   });
   response.json(centers);
@@ -22,6 +23,11 @@ module.exports.getById = async (request, response, next) => {
     include: {
       Address: true,
       User: true,
+      Center_Material: {
+        include: {
+          Recyclable_Material: true,
+        },
+      },
     },
   });
   response.json(center);

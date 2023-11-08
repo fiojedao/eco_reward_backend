@@ -7,6 +7,9 @@ const logger = require("morgan");
 const app = express();
 const prism = new PrismaClient();
 
+// Configurar una ruta para servir imágenes estáticas desde la carpeta
+app.use("/images", express.static(__dirname + "/images"));
+
 //---Archivos de rutas---
 const centerRouter = require("./routes/centerRoutes");
 const userRouter = require("./routes/userRoutes");
