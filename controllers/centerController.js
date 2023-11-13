@@ -60,17 +60,20 @@ module.exports.create = async (request, response, next) => {
       operating_hours: center.operating_hours,
       administrator_userID: center.administrator_userID,
       status: "Active",
+      Recyclable_Material: {
+        connect: center.accepted_materials,
+      },
     },
   });
 
-  const centerMaterialFormat = center.accepted_materials.map((material) => ({
+  /*  const centerMaterialFormat = center.accepted_materials.map((material) => ({
     centerID: newCenter.centerID,
     materialID: material.materialID,
-  }));
-
+  })); */
+  /* 
   const newCenter_Material = await prisma.center_Material.createMany({
     data: centerMaterialFormat,
-  });
+  }); */
 
   response.json(newCenter);
 };
