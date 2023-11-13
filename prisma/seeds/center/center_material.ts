@@ -15,3 +15,20 @@
   { centerID: 4, materialID: 4 },
 ];
  */
+
+/* export const center_material = [
+  { materialID: 1 },
+  { materialID: 2 },
+
+  { materialID: 3 },
+  { materialID: 4 },
+
+  { materialID: 1 },
+  { materialID: 2 },
+  { materialID: 3 },
+
+  { materialID: 1 },
+  { materialID: 2 },
+  { materialID: 3 },
+  { materialID: 4 },
+]; */

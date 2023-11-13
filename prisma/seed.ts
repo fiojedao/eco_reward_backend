@@ -39,6 +39,7 @@ async function main() {
   await prisma.recycling_Center.createMany({
     data: recycling_centers,
   });
+
   await prisma.coupon_Exchange_History.createMany({
     data: coupon_history,
   });

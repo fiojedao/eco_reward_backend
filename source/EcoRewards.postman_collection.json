@@ -34,6 +34,81 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "create center",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Centro de Reciclaje ABC\",\r\n  \"province\": \"San Jose\",\r\n  \"canton\": \"Escazu\",\r\n  \"district\": \"San Antonio\",\r\n  \"exact_address\": \"Calle Principal, #123\",\r\n  \"phone\": \"123-456-7890\",\r\n  \"operating_hours\": \"Lunes a Viernes, 9 AM - 5 PM\",\r\n  \"administrator_userID\": 2,\r\n  \"accepted_materials\": [ { \"materialID\": 1 }, { \"materialID\": 2 } ]\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/center/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"center",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "material list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/center/material",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"center",
+								"material"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update center",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Centro de Reciclaje ABC\",\r\n  \"province\": \"San Jose\",\r\n  \"canton\": \"Escazu\",\r\n  \"district\": \"San Antonio\",\r\n  \"exact_address\": \"Calle Principal, #123\",\r\n  \"phone\": \"123-456-7890\",\r\n  \"operating_hours\": \"Lunes a Viernes, 9 AM - 5 PM\",\r\n  \"administrator_userID\": 2,\r\n  \"accepted_materials\": [\r\n    { \"materialID\": 1 },\r\n    { \"materialID\": 2 }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/center/30",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"center",
+								"30"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -97,6 +172,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "list administartors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/user/administrators",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"administrators"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -108,6 +202,25 @@
 					"request": {
 						"method": "GET",
 						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get material",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/material/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"material",
+								"1"
+							]
+						}
 					},
 					"response": []
 				}

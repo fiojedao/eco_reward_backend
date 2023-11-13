@@ -6,6 +6,7 @@ export const recycling_centers = [
     operating_hours: "Lunes a Viernes: 9:00 AM - 5:00 PM",
     status: "Activo",
     administrator_userID: 2,
+ 
   },
   {
     name: "Eco-Friendly Recycling Hub",
