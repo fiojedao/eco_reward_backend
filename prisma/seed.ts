@@ -37,9 +37,25 @@ async function main() {
   await prisma.coupon_Exchange.createMany({
     data: coupon_exchange,
   });
-  await prisma.recycling_Center.createMany({
-    data: recycling_centers,
-  });
+
+  for (const center of recycling_centers) {
+    const { materials, ...centerData } = center;
+
+    const createdCenter = await prisma.recycling_Center.create({
+      data: centerData,
+    });
+
+    for (const material of materials) {
+      await prisma.center_Material.create({
+        data: {
+          centerID: createdCenter.centerID,
+          materialID: material.materialID,
+        },
+      });
+    }
+
+    console.log(`Centro de reciclaje creado: ${createdCenter.name}`);
+  }
 
   await prisma.coupon_Exchange_History.createMany({
     data: coupon_history,

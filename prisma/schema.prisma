@@ -66,43 +66,53 @@ model Recycling_Center {
   administrator_userID Int?
   User                 User?                         @relation(fields: [administrator_userID], references: [userID])
   Address              Addresses                     @relation(fields: [addressID], references: [addressID])
-  Recyclable_Material      Recyclable_Material[]
+  materials            Recyclable_Material[]
   material_exchanges   Recycling_Material_Exchange[]
+  Center_Material      Center_Material[]
 }
 
 model Recyclable_Material {
-  materialID           Int                 @id @default(autoincrement())
+  materialID           Int                         @id @default(autoincrement())
   name                 String
   description          String?
   image                String?
   unit_of_measure      String?
   price                Float?
   color_representation String?
-  Recycling_Center      Recycling_Center[]
+  recycling_centers    Recycling_Center[]
   material_exchanges   Exchange_Material_Details[]
+  Center_Material      Center_Material[]
 }
 
+model Center_Material {
+  centerID            Int
+  materialID          Int
+  Recycling_Center    Recycling_Center    @relation(fields: [centerID], references: [centerID])
+  Recyclable_Material Recyclable_Material @relation(fields: [materialID], references: [materialID])
 
+  @@id([centerID, materialID])
+}
 
 model Recycling_Material_Exchange {
-  exchangeID          Int                 @id @default(autoincrement())
-  client_userID       Int
-  centerID            Int
-  exchange_date       DateTime
+  exchangeID                Int                         @id @default(autoincrement())
+  client_userID             Int
+  centerID                  Int
+  exchange_date             DateTime
   Exchange_Material_Details Exchange_Material_Details[]
-  client_user         User                @relation(fields: [client_userID], references: [userID])
-  Recycling_Center    Recycling_Center    @relation(fields: [centerID], references: [centerID])
+  client_user               User                        @relation(fields: [client_userID], references: [userID])
+  Recycling_Center          Recycling_Center            @relation(fields: [centerID], references: [centerID])
 }
 
 model Exchange_Material_Details {
-  detailID            Int                 @id @default(autoincrement())
-  exchangeID          Int
-  materialID          Int
-  quantity            Float
-  eco_coins           Float
-  Recycling_Material  Recyclable_Material @relation(fields: [materialID], references: [materialID])
+  detailID                    Int                         @id @default(autoincrement())
+  exchangeID                  Int
+  materialID                  Int
+  quantity                    Float
+  eco_coins                   Float
+  Recycling_Material          Recyclable_Material         @relation(fields: [materialID], references: [materialID])
   Recycling_Material_Exchange Recycling_Material_Exchange @relation(fields: [exchangeID], references: [exchangeID])
 }
+
 model Coupon_Exchange {
   couponID                Int                       @id @default(autoincrement())
   name                    String

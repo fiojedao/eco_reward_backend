@@ -70,6 +70,14 @@ CREATE TABLE `Recyclable_Material` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Center_Material` (
+    `centerID` INTEGER NOT NULL,
+    `materialID` INTEGER NOT NULL,
+
+    PRIMARY KEY (`centerID`, `materialID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Recycling_Material_Exchange` (
     `exchangeID` INTEGER NOT NULL AUTO_INCREMENT,
     `client_userID` INTEGER NOT NULL,
@@ -123,7 +131,6 @@ CREATE TABLE `Client_Eco_Coins` (
     PRIMARY KEY (`ecoCoinsID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-<<<<<<<< HEAD:prisma/migrations/20231113074608_init/migration.sql
 -- CreateTable
 CREATE TABLE `_Recyclable_MaterialToRecycling_Center` (
     `A` INTEGER NOT NULL,
@@ -133,8 +140,6 @@ CREATE TABLE `_Recyclable_MaterialToRecycling_Center` (
     INDEX `_Recyclable_MaterialToRecycling_Center_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-========
->>>>>>>> develop:prisma/migrations/20231113031040_init/migration.sql
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_role_fkey` FOREIGN KEY (`role`) REFERENCES `User_Role`(`roleID`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -149,6 +154,12 @@ ALTER TABLE `Recycling_Center` ADD CONSTRAINT `Recycling_Center_administrator_us
 
 -- AddForeignKey
 ALTER TABLE `Recycling_Center` ADD CONSTRAINT `Recycling_Center_addressID_fkey` FOREIGN KEY (`addressID`) REFERENCES `Addresses`(`addressID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Center_Material` ADD CONSTRAINT `Center_Material_centerID_fkey` FOREIGN KEY (`centerID`) REFERENCES `Recycling_Center`(`centerID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Center_Material` ADD CONSTRAINT `Center_Material_materialID_fkey` FOREIGN KEY (`materialID`) REFERENCES `Recyclable_Material`(`materialID`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Recycling_Material_Exchange` ADD CONSTRAINT `Recycling_Material_Exchange_client_userID_fkey` FOREIGN KEY (`client_userID`) REFERENCES `User`(`userID`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -170,12 +181,9 @@ ALTER TABLE `Coupon_Exchange_History` ADD CONSTRAINT `Coupon_Exchange_History_co
 
 -- AddForeignKey
 ALTER TABLE `Client_Eco_Coins` ADD CONSTRAINT `Client_Eco_Coins_client_userID_fkey` FOREIGN KEY (`client_userID`) REFERENCES `User`(`userID`) ON DELETE RESTRICT ON UPDATE CASCADE;
-<<<<<<<< HEAD:prisma/migrations/20231113074608_init/migration.sql
 
 -- AddForeignKey
 ALTER TABLE `_Recyclable_MaterialToRecycling_Center` ADD CONSTRAINT `_Recyclable_MaterialToRecycling_Center_A_fkey` FOREIGN KEY (`A`) REFERENCES `Recyclable_Material`(`materialID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_Recyclable_MaterialToRecycling_Center` ADD CONSTRAINT `_Recyclable_MaterialToRecycling_Center_B_fkey` FOREIGN KEY (`B`) REFERENCES `Recycling_Center`(`centerID`) ON DELETE CASCADE ON UPDATE CASCADE;
-========
->>>>>>>> develop:prisma/migrations/20231113031040_init/migration.sql
