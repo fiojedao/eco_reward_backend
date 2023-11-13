@@ -12,7 +12,7 @@ export const exchange_material_details = [
     eco_coins: 120,
   },
   {
-    exchangeID: 2,
+    exchangeID: 1,
     materialID: 3,
     quantity: 5,
     eco_coins: 175,

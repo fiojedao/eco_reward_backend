@@ -51,6 +51,7 @@ CREATE TABLE `Recycling_Center` (
     `phone` VARCHAR(191) NULL,
     `operating_hours` VARCHAR(191) NULL,
     `status` VARCHAR(191) NOT NULL,
+    `administrator_userID` INTEGER NULL,
 
     PRIMARY KEY (`centerID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -83,11 +84,19 @@ CREATE TABLE `Recycling_Material_Exchange` (
     `client_userID` INTEGER NOT NULL,
     `centerID` INTEGER NOT NULL,
     `exchange_date` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`exchangeID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Exchange_Material_Details` (
+    `detailID` INTEGER NOT NULL AUTO_INCREMENT,
+    `exchangeID` INTEGER NOT NULL,
     `materialID` INTEGER NOT NULL,
     `quantity` DOUBLE NOT NULL,
     `eco_coins` DOUBLE NOT NULL,
 
-    PRIMARY KEY (`exchangeID`)
+    PRIMARY KEY (`detailID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -123,16 +132,6 @@ CREATE TABLE `Client_Eco_Coins` (
     PRIMARY KEY (`ecoCoinsID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateTable
-CREATE TABLE `User_Center` (
-    `user_centerID` INTEGER NOT NULL AUTO_INCREMENT,
-    `centerID` INTEGER NOT NULL,
-    `role` INTEGER NOT NULL,
-    `administrator_userID` INTEGER NULL,
-
-    PRIMARY KEY (`user_centerID`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
 -- AddForeignKey
 ALTER TABLE `User` ADD CONSTRAINT `User_role_fkey` FOREIGN KEY (`role`) REFERENCES `User_Role`(`roleID`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -141,6 +140,9 @@ ALTER TABLE `User_Address` ADD CONSTRAINT `User_Address_userID_fkey` FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE `User_Address` ADD CONSTRAINT `User_Address_addressID_fkey` FOREIGN KEY (`addressID`) REFERENCES `Addresses`(`addressID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Recycling_Center` ADD CONSTRAINT `Recycling_Center_administrator_userID_fkey` FOREIGN KEY (`administrator_userID`) REFERENCES `User`(`userID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Recycling_Center` ADD CONSTRAINT `Recycling_Center_addressID_fkey` FOREIGN KEY (`addressID`) REFERENCES `Addresses`(`addressID`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -158,7 +160,10 @@ ALTER TABLE `Recycling_Material_Exchange` ADD CONSTRAINT `Recycling_Material_Exc
 ALTER TABLE `Recycling_Material_Exchange` ADD CONSTRAINT `Recycling_Material_Exchange_centerID_fkey` FOREIGN KEY (`centerID`) REFERENCES `Recycling_Center`(`centerID`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Recycling_Material_Exchange` ADD CONSTRAINT `Recycling_Material_Exchange_materialID_fkey` FOREIGN KEY (`materialID`) REFERENCES `Recyclable_Material`(`materialID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Exchange_Material_Details` ADD CONSTRAINT `Exchange_Material_Details_materialID_fkey` FOREIGN KEY (`materialID`) REFERENCES `Recyclable_Material`(`materialID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Exchange_Material_Details` ADD CONSTRAINT `Exchange_Material_Details_exchangeID_fkey` FOREIGN KEY (`exchangeID`) REFERENCES `Recycling_Material_Exchange`(`exchangeID`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Coupon_Exchange_History` ADD CONSTRAINT `Coupon_Exchange_History_client_userID_fkey` FOREIGN KEY (`client_userID`) REFERENCES `User`(`userID`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -168,6 +173,3 @@ ALTER TABLE `Coupon_Exchange_History` ADD CONSTRAINT `Coupon_Exchange_History_co
 
 -- AddForeignKey
 ALTER TABLE `Client_Eco_Coins` ADD CONSTRAINT `Client_Eco_Coins_client_userID_fkey` FOREIGN KEY (`client_userID`) REFERENCES `User`(`userID`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `User_Center` ADD CONSTRAINT `User_Center_centerID_fkey` FOREIGN KEY (`centerID`) REFERENCES `Recycling_Center`(`centerID`) ON DELETE RESTRICT ON UPDATE CASCADE;
