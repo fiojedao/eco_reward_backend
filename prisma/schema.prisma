@@ -71,7 +71,7 @@ model Recycling_Center {
 }
 
 model Recyclable_Material {
-  materialID           Int                           @id @default(autoincrement())
+  materialID           Int                 @id @default(autoincrement())
   name                 String
   description          String?
   image                String?
@@ -79,7 +79,7 @@ model Recyclable_Material {
   price                Float?
   color_representation String?
   Recycling_Center      Recycling_Center[]
-  material_exchanges   Recycling_Material_Exchange[]
+  material_exchanges   Exchange_Material_Details[]
 }
 
 
@@ -89,14 +89,20 @@ model Recycling_Material_Exchange {
   client_userID       Int
   centerID            Int
   exchange_date       DateTime
+  Exchange_Material_Details Exchange_Material_Details[]
+  client_user         User                @relation(fields: [client_userID], references: [userID])
+  Recycling_Center    Recycling_Center    @relation(fields: [centerID], references: [centerID])
+}
+
+model Exchange_Material_Details {
+  detailID            Int                 @id @default(autoincrement())
+  exchangeID          Int
   materialID          Int
   quantity            Float
   eco_coins           Float
-  client_user         User                @relation(fields: [client_userID], references: [userID])
-  Recycling_Center    Recycling_Center    @relation(fields: [centerID], references: [centerID])
-  Recyclable_Material Recyclable_Material @relation(fields: [materialID], references: [materialID])
+  Recycling_Material  Recyclable_Material @relation(fields: [materialID], references: [materialID])
+  Recycling_Material_Exchange Recycling_Material_Exchange @relation(fields: [exchangeID], references: [exchangeID])
 }
-
 model Coupon_Exchange {
   couponID                Int                       @id @default(autoincrement())
   name                    String

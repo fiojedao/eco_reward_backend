@@ -9,7 +9,8 @@ import {
   recycling_centers,
   coupon_exchange,
   coupon_history,
-  material_exchange,
+  recycling_material_exchange,
+  exchange_material_details,
 } from "./seeds";
 
 const prisma = new PrismaClient();
@@ -44,7 +45,10 @@ async function main() {
     data: coupon_history,
   });
   await prisma.recycling_Material_Exchange.createMany({
-    data: material_exchange,
+    data: recycling_material_exchange,
+  });
+  await prisma.exchange_Material_Details.createMany({
+    data: exchange_material_details,
   });
 }
 

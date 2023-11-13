@@ -11,6 +11,7 @@ const prism = new PrismaClient();
 app.use("/images", express.static(__dirname + "/images"));
 
 //---Archivos de rutas---
+const materialExchangeRoutes = require("./routes/materialExchangeRoutes");
 const centerRouter = require("./routes/centerRoutes");
 const userRouter = require("./routes/userRoutes");
 const recyclableMaterialRoutes = require("./routes/recyclableMaterialRoutes");
@@ -35,6 +36,7 @@ app.use(
 );
 
 //---- Definir rutas ----
+app.use("/materialexchange/", materialExchangeRoutes);
 app.use("/center/", centerRouter);
 app.use("/user/", userRouter);
 app.use("/material/", recyclableMaterialRoutes);
