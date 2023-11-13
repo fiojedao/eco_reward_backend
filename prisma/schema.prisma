@@ -66,7 +66,7 @@ model Recycling_Center {
   administrator_userID Int?
   User                 User?                         @relation(fields: [administrator_userID], references: [userID])
   Address              Addresses                     @relation(fields: [addressID], references: [addressID])
-  Center_Material      Center_Material[]
+  Recyclable_Material      Recyclable_Material[]
   material_exchanges   Recycling_Material_Exchange[]
 }
 
@@ -78,17 +78,11 @@ model Recyclable_Material {
   unit_of_measure      String?
   price                Float?
   color_representation String?
-  Center_Material      Center_Material[]
+  Recycling_Center      Recycling_Center[]
   material_exchanges   Recycling_Material_Exchange[]
 }
 
-model Center_Material {
-  center_materialID   Int                 @id @default(autoincrement())
-  centerID            Int
-  materialID          Int
-  Recycling_Center    Recycling_Center    @relation(fields: [centerID], references: [centerID])
-  Recyclable_Material Recyclable_Material @relation(fields: [materialID], references: [materialID])
-}
+
 
 model Recycling_Material_Exchange {
   exchangeID          Int                 @id @default(autoincrement())

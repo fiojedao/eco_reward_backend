@@ -6,7 +6,6 @@ import {
   user_addresses,
   client_coins,
   recyclable_Material,
-  center_material,
   recycling_centers,
   coupon_exchange,
   coupon_history,
@@ -39,9 +38,6 @@ async function main() {
   });
   await prisma.recycling_Center.createMany({
     data: recycling_centers,
-  });
-  await prisma.center_Material.createMany({
-    data: center_material,
   });
   await prisma.coupon_Exchange_History.createMany({
     data: coupon_history,

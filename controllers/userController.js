@@ -1,8 +1,20 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-//Obtener listado
+//users list
 module.exports.get = async (request, response, next) => {
   const centers = await prisma.user.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+  response.json(centers);
+};
+//administrators list
+module.exports.getAdministrators = async (request, response, next) => {
+  const centers = await prisma.user.findMany({
+    where: {
+      role: 2,
+    },
     orderBy: {
       name: "asc",
     },

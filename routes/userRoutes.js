@@ -6,6 +6,8 @@ const userController = require("../controllers/userController");
 // Ruta para obtener la lista de usuarios
 router.get("/", userController.get);
 
+router.get("/administrators", userController.getAdministrators);
+
 // Ruta para obtener un usuario por ID
 router.get("/:id", userController.getById);
 

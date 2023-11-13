@@ -1,4 +1,4 @@
-export const center_material = [
+/* export const center_material = [
   { centerID: 1, materialID: 1 },
   { centerID: 1, materialID: 2 },
 
@@ -14,3 +14,4 @@ export const center_material = [
   { centerID: 4, materialID: 3 },
   { centerID: 4, materialID: 4 },
 ];
+ */
