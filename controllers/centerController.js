@@ -34,7 +34,7 @@ module.exports.getById = async (request, response, next) => {
     include: {
       Address: true,
       User: true,
-      Recyclable_Material: true,
+      Center_Material: true,
     },
   });
   response.json(center);
@@ -60,7 +60,7 @@ module.exports.create = async (request, response, next) => {
       operating_hours: center.operating_hours,
       administrator_userID: center.administrator_userID,
       status: "Active",
-      Recyclable_Material: {
+      Center_Material: {
         connect: center.accepted_materials,
       },
     },
@@ -89,13 +89,13 @@ module.exports.update = async (request, response, next) => {
     include: {
       Address: true,
       User: true,
-      Recyclable_Material: true,
+      Center_Material: true
     },
   });
 
-  const updateAddress = await prisma.addresses.update({
+  await prisma.addresses.update({
     where: {
-      addressID: oldCenter.addressID,
+      addressID: oldCenter.Address.addressID,
     },
     data: {
       province: center.province,
@@ -105,33 +105,50 @@ module.exports.update = async (request, response, next) => {
     },
   });
 
-  const oldMaterialsFormat = oldCenter.Recyclable_Material.map((old) => ({
-    ["materialID"]: old.materialID,
-  }));
-  const newMaterialsFormat = center.accepted_materials.map((material) => ({
-    ["materialID"]: material.materialID,
-  }));
-
-  console.log(oldMaterialsFormat);
-  console.log(newMaterialsFormat);
-
   const newCenter = await prisma.recycling_Center.update({
     where: {
       centerID: idCenter,
     },
     data: {
-      name: "Centro de Reciclaje ABC",
-      addressID: updateAddress.addressID,
-      phone: "123-456-7890",
-      operating_hours: "Lunes a Viernes, 9 AM - 5 PM",
-      administrator_userID: 2,
+      name: center.name,
+      addressID: oldCenter.Address.addressID,
+      phone: center.phone,
+      operating_hours: center.operating_hours,
+      administrator_userID: center.administrator_userID,
       status: "Active",
-      Recyclable_Material: {
-        disconnect: oldMaterialsFormat,
-        connect: newMaterialsFormat,
-      },
     },
   });
+  
+  for (const material of oldCenter.Center_Material) {
+    await prisma.center_Material.delete({
+      where: {
+        centerID_materialID: {
+          centerID: material.centerID,
+          materialID: material.materialID,
+        },
+      },
+    });
+  }
+  
 
-  response.json(newCenter);
+  for (const material of center.Center_Material) {
+    await prisma.center_Material.create({
+      data: {
+        centerID: material.centerID,
+        materialID: material.materialID,
+      },
+    });
+  }
+
+  const actualCenter = await prisma.recycling_Center.findUnique({
+    where: {
+      centerID: idCenter,
+    },
+    include: {
+      Address: true,
+      User: true,
+      Center_Material: true
+    },
+  });
+  response.json(actualCenter);
 };

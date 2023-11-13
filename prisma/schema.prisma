@@ -87,8 +87,8 @@ model Recyclable_Material {
 model Center_Material {
   centerID            Int
   materialID          Int
-  Recycling_Center    Recycling_Center    @relation(fields: [centerID], references: [centerID])
-  Recyclable_Material Recyclable_Material @relation(fields: [materialID], references: [materialID])
+  Recycling_Center    Recycling_Center?    @relation(fields: [centerID], references: [centerID] )
+  Recyclable_Material Recyclable_Material? @relation(fields: [materialID], references: [materialID])
 
   @@id([centerID, materialID])
 }
