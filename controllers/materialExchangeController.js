@@ -30,6 +30,30 @@ module.exports.getById = async (request, response, next) => {
   }
 };
 
+module.exports.getAllExchangesByUserId = async (request, response, next) => {
+  const userId = parseInt(request.params.id);
+
+  try {
+    const exchanges = await recyclingMaterialExchangeService.getAllExchangesByUserId(userId);
+    response.json(exchanges);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports.getAllExchangesByAdministratorUserId = async (request, response, next) => {
+  const administratorUserId = parseInt(request.params.id);
+
+  try {
+    const exchanges = await recyclingMaterialExchangeService.getAllExchangesByAdministratorUserId(administratorUserId);
+    response.json(exchanges);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.deleteExchangeById = async (request, response, next) => {
   const exchangeId = parseInt(request.params.id);
 

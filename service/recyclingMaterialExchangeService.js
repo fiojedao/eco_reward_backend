@@ -45,6 +45,54 @@ class recyclingMaterialExchangeService {
     }
   }
 
+  async getAllExchangesByUserId(userId) {
+    try {
+      return await prisma.recycling_Material_Exchange.findMany({
+        where: {
+          client_userID: userId,
+        },
+        orderBy: {
+          exchange_date: "asc",
+        },
+        include: {
+          Exchange_Material_Details: {
+            include: {
+              Recycling_Material: true,
+            },
+          },
+          Recycling_Center: true,
+        },
+      });
+    } catch (error) {
+      throw new Error(`Error fetching exchanges for user: ${error.message}`);
+    }
+  }
+
+  async getAllExchangesByAdministratorUserId(administratorUserId) {
+    try {
+      return await prisma.recycling_Material_Exchange.findMany({
+        where: {
+          Recycling_Center: {
+            administrator_userID: administratorUserId,
+          },
+        },
+        orderBy: {
+          exchange_date: "asc",
+        },
+        include: {
+          Exchange_Material_Details: {
+            include: {
+              Recycling_Material: true,
+            },
+          },
+          Recycling_Center: true,
+        },
+      });
+    } catch (error) {
+      throw new Error(`Error fetching exchanges for administrator user: ${error.message}`);
+    }
+  }
+
   async deleteExchangeById(exchangeId) {
     try {
       return await prisma.recycling_Material_Exchange.delete({

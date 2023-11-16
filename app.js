@@ -16,6 +16,10 @@ const centerRouter = require("./routes/centerRoutes");
 const userRouter = require("./routes/userRoutes");
 const recyclableMaterialRoutes = require("./routes/recyclableMaterialRoutes");
 const addressRoute = require("./routes/addressRoute");
+const ecoCoinsRoute = require("./routes/ecoCoinsRoute");
+const couponExchangeRoute = require("./routes/couponExchangeRoute");
+const couponExchangeHistoryRoute = require("./routes/couponExchangeHistoryRoute");
+const exchangeMaterialDetailsRoute = require("./routes/exchangeMaterialDetailsRoute");
 
 // Acceder a la configuracion del archivo .env
 dotEnv.config();
@@ -43,6 +47,10 @@ app.use("/api/center/", centerRouter);
 app.use("/api/user/", userRouter);
 app.use("/api/material/", recyclableMaterialRoutes);
 app.use("/api/address/", addressRoute);
+app.use("/api/ecocoins/", ecoCoinsRoute);
+app.use("/api/couponexchange/", couponExchangeRoute);
+app.use("/api/couponexchangehistory/", couponExchangeHistoryRoute);
+app.use("/api/exchangematerialdetails/", exchangeMaterialDetailsRoute);
 
 // Servidor
 app.listen(port, () => {
