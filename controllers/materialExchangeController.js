@@ -2,10 +2,8 @@ const RecyclingMaterialExchangeService = require('../service/recyclingMaterialEx
 const recyclingMaterialExchangeService = new RecyclingMaterialExchangeService();
 
 module.exports.get = async (request, response, next) => {
-  const userId = 3;
-
   try {
-    const userExchangeHistory = await recyclingMaterialExchangeService.getAllExchanges(userId);
+    const userExchangeHistory = await recyclingMaterialExchangeService.getAllExchanges();
     response.json(userExchangeHistory);
   } catch (error) {
     console.error(error.message);

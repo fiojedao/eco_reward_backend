@@ -2,12 +2,9 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 class recyclingMaterialExchangeService {
-  async getAllExchanges(userId) {
+  async getAllExchanges() {
     try {
       return await prisma.recycling_Material_Exchange.findMany({
-        where: {
-          client_userID: userId,
-        },
         orderBy: {
           exchange_date: "asc",
         },
