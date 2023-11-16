@@ -3,12 +3,13 @@ const router = express.Router();
 
 const exchangeMaterialDetailsController = require("../controllers/exchangeMaterialDetailsController");
 
-// Ruta para obtener la lista de address
 router.get("/", exchangeMaterialDetailsController.getAllDetails);
 
 router.get("/:id", exchangeMaterialDetailsController.getDetailsById);
 
 router.post("/", exchangeMaterialDetailsController.createDetails);
+
+router.post("/many/", exchangeMaterialDetailsController.createDetailsMany);
 
 router.put("/:id", exchangeMaterialDetailsController.updateDetails);
 

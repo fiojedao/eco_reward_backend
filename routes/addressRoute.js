@@ -3,7 +3,6 @@ const router = express.Router();
 
 const addressController = require("../controllers/addressController");
 
-// Ruta para obtener la lista de address
 router.get("/", addressController.getAll);
 
 router.get("/getAllAddressesByUserId/:id", addressController.getAllAddressesByUserId);

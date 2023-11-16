@@ -1,7 +1,6 @@
 const ExchangeMaterialDetailsService = require('../service/exchangeMaterialDetailsService');
 const exchangeMaterialDetailsService = new ExchangeMaterialDetailsService();
 
-// Obtener todos los detalles
 module.exports.getAllDetails = async (request, response, next) => {
   try {
     const details = await exchangeMaterialDetailsService.getAllDetails();
@@ -12,7 +11,6 @@ module.exports.getAllDetails = async (request, response, next) => {
   }
 };
 
-// Obtener detalles por ID
 module.exports.getDetailsById = async (request, response, next) => {
   const detailId = parseInt(request.params.id);
 
@@ -30,7 +28,6 @@ module.exports.getDetailsById = async (request, response, next) => {
   }
 };
 
-// Crear detalles
 module.exports.createDetails = async (request, response, next) => {
   const detailsData = request.body;
 
@@ -43,7 +40,18 @@ module.exports.createDetails = async (request, response, next) => {
   }
 };
 
-// Actualizar detalles
+module.exports.createDetailsMany = async (request, response, next) => {
+  const detailsData = request.body;
+
+  try {
+    const newDetails = await exchangeMaterialDetailsService.createDetailMany(detailsData);
+    response.json(newDetails);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.updateDetails = async (request, response, next) => {
   const detailId = parseInt(request.params.id);
   const updatedDetailsData = request.body;
@@ -62,7 +70,6 @@ module.exports.updateDetails = async (request, response, next) => {
   }
 };
 
-// Eliminar detalles
 module.exports.deleteDetails = async (request, response, next) => {
   const detailId = parseInt(request.params.id);
 

@@ -1,7 +1,6 @@
 const CenterService = require('../service/centerService');
 const centerService = new CenterService();
 
-//centerList
 module.exports.get = async (request, response, next) => {
   try {
     const centers = await centerService.getAllCenters();
@@ -11,7 +10,7 @@ module.exports.get = async (request, response, next) => {
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
-//material list
+
 module.exports.getMaterial = async (request, response, next) => {
   try {
     const materialList = await centerService.getMaterialList();
@@ -21,7 +20,7 @@ module.exports.getMaterial = async (request, response, next) => {
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
-//Obtener por Id
+
 module.exports.getById = async (request, response, next) => {
   const id = parseInt(request.params.id);
 
@@ -38,7 +37,7 @@ module.exports.getById = async (request, response, next) => {
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
-//Crear
+
 module.exports.create = async (request, response, next) => {
   const centerData = request.body;
 
@@ -50,7 +49,7 @@ module.exports.create = async (request, response, next) => {
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
-//Actualizar
+
 module.exports.update = async (request, response, next) => {
   const id = parseInt(request.params.id);
   const updatedCenterData = request.body;

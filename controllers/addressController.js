@@ -1,7 +1,7 @@
 const AddressService = require('../service/addressService');
 const addressService = new AddressService();
 
-//adress list
+
 module.exports.getAll = async (request, response, next) => {
   try {
     const allAddresses = await addressService.getAllAddresses();
@@ -12,7 +12,7 @@ module.exports.getAll = async (request, response, next) => {
   }
 };
 
-//adress by Id
+
 module.exports.getAllAddressesByUserId = async (request, response, next) => {
   try {
     const allAddresses = await addressService.getAllAddressesByUserId(parseInt(request.params.id));
@@ -22,7 +22,7 @@ module.exports.getAllAddressesByUserId = async (request, response, next) => {
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
-//adress by Id
+
 module.exports.getByAddressId = async (request, response, next) => {
   try {
     const allAddresses = await addressService.getByAddressId(parseInt(request.params.id));
@@ -32,7 +32,7 @@ module.exports.getByAddressId = async (request, response, next) => {
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
-//create address
+
 module.exports.create = async (request, response, next) => {
   try {
     const allAddresses = await addressService.createAddressAndAssociation(request.body);
@@ -43,7 +43,6 @@ module.exports.create = async (request, response, next) => {
   }
 };
 
-//uopdate address
 module.exports.update = async (request, response, next) => {
   try {
     const { provinceId, province, cantonId, canton, districtId, district, exact_address } = request.body;
@@ -55,7 +54,6 @@ module.exports.update = async (request, response, next) => {
   }
 };
 
-//delete address
 module.exports.delete = async (request, response, next) => {
   try {
     const allAddresses = await addressService.deleteAddressAndAssociation(parseInt(request.params.id));

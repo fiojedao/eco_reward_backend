@@ -3,7 +3,6 @@ const router = express.Router();
 
 const couponExchangeController = require("../controllers/couponExchangeController");
 
-// Ruta para obtener la lista de address
 router.get("/", couponExchangeController.getAllCoupons);
 
 router.get("/:id", couponExchangeController.getCouponById);

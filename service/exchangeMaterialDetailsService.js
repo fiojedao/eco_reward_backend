@@ -9,7 +9,6 @@ class exchangeMaterialDetailsService {
           Recycling_Material: true,
           Recycling_Material_Exchange: {
             include: {
-              User: true,
               Recycling_Center: true,
             },
           },
@@ -30,7 +29,6 @@ class exchangeMaterialDetailsService {
           Recycling_Material: true,
           Recycling_Material_Exchange: {
             include: {
-              User: true,
               Recycling_Center: true,
             },
           },
@@ -54,7 +52,6 @@ class exchangeMaterialDetailsService {
           Recycling_Material: true,
           Recycling_Material_Exchange: {
             include: {
-              User: true,
               Recycling_Center: true,
             },
           },
@@ -64,6 +61,38 @@ class exchangeMaterialDetailsService {
       throw new Error(`Error creating details: ${error.message}`);
     }
   }
+  // En el service
+  async createDetailMany({ exchangeId, materials }) {
+    try {
+      // Creamos los detalles
+      var resp = [];
+      for (let index = 0; index < materials.length; index++) {
+        const material = materials[index];
+        var data = await prisma.Exchange_Material_Details.create({
+          data: {
+            exchangeID: exchangeId,
+            materialID: material.materialId,
+            quantity: material.quantity,
+            eco_coins: material.ecoCoins,
+          },
+          include: {
+            Recycling_Material: true,
+            Recycling_Material_Exchange: {
+              include: {
+                Recycling_Center: true,
+              },
+            },
+          },
+        });
+        resp.push(data);
+      }
+  
+      return resp;
+    } catch (error) {
+      throw new Error(`Error creating details: ${error.message}`);
+    }
+  }
+
 
   async updateDetails(detailId, updatedDetailsData) {
     try {

@@ -1,7 +1,6 @@
 const CouponExchangeHistoryService = require('../service/couponExchangeHistoryService');
 const couponExchangeHistoryService = new CouponExchangeHistoryService();
 
-// Obtener todos
 module.exports.getAllCouponExchangeHistory = async (request, response, next) => {
   try {
     const couponExchangeHistory = await couponExchangeHistoryService.getAllCouponExchangeHistory();
@@ -12,7 +11,6 @@ module.exports.getAllCouponExchangeHistory = async (request, response, next) => 
   }
 };
 
-// Obtener por ID
 module.exports.getCouponExchangeHistoryById = async (request, response, next) => {
   const historyId = parseInt(request.params.id);
 
@@ -30,7 +28,6 @@ module.exports.getCouponExchangeHistoryById = async (request, response, next) =>
   }
 };
 
-// Obtener por client_userID
 module.exports.getCouponExchangeHistoryByClientUserId = async (request, response, next) => {
   const clientUserId = parseInt(request.params.id);
 

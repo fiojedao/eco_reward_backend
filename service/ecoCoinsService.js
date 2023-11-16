@@ -32,55 +32,95 @@ class EcoCoinsService {
     }
   }
 
-  async getEcoCoinsByClientId(clientUserId) {
+  async getEcoCoinsByClientId(clientUserID) {
     try {
-      return await prisma.client_Eco_Coins.findMany({
+      return await prisma.client_Eco_Coins.findFirst({
         where: {
-          client_userID: clientUserId,
-        },
-        orderBy: {
-          ecoCoinsID: "asc",
+          client_userID: clientUserID,
         },
         include: {
           User: true,
         },
       });
     } catch (error) {
-      throw new Error(`Error fetching eco coins by client user ID: ${error.message}`);
+      throw new Error(`Error fetching eco coins by client_userID: ${error.message}`);
     }
   }
 
-  async createEcoCoins(clientUserId, balance) {
+  async manageEcoCoins(clientUserId, balance) {
+    let existingEcoCoins;
+
     try {
-      return await prisma.client_Eco_Coins.create({
-        data: {
+      existingEcoCoins = await prisma.client_Eco_Coins.findFirst({
+        where: {
           client_userID: clientUserId,
-          balance: balance,
         },
         include: {
           User: true,
         },
       });
+
+      if (existingEcoCoins) {
+        return await prisma.client_Eco_Coins.update({
+          where: {
+            ecoCoinsID: existingEcoCoins.ecoCoinsID,
+          },
+          data: {
+            balance: {
+              increment: balance
+            },
+          },
+          include: {
+            User: true,
+          },
+        });
+      } else {
+        return await prisma.client_Eco_Coins.create({
+          data: {
+            client_userID: clientUserId,
+            balance: balance,
+          },
+          include: {
+            User: true,
+          },
+        });
+      }
     } catch (error) {
-      throw new Error(`Error creating eco coins: ${error.message}`);
+      throw new Error(`Error managing eco coins: ${error.message}`);
     }
   }
 
-  async updateEcoCoins(ecoCoinsId, newBalance) {
+  async decrementEcoCoins(clientUserId, balance) {
+    let existingEcoCoins;
     try {
-      return await prisma.client_Eco_Coins.update({
+      existingEcoCoins = await prisma.client_Eco_Coins.findFirst({
         where: {
-          ecoCoinsID: ecoCoinsId,
-        },
-        data: {
-          balance: newBalance,
+          client_userID: clientUserId,
         },
         include: {
           User: true,
         },
       });
+
+      if (existingEcoCoins) {
+        return await prisma.client_Eco_Coins.update({
+          where: {
+            ecoCoinsID: existingEcoCoins.ecoCoinsID,
+          },
+          data: {
+            balance: {
+              decrement: balance
+            },
+          },
+          include: {
+            User: true,
+          },
+        });
+      } else {
+        throw new Error(`Error managing eco coins, User: ${clientUserId} not found`);
+      }
     } catch (error) {
-      throw new Error(`Error updating eco coins: ${error.message}`);
+      throw new Error(`Error managing eco coins: ${error.message}`);
     }
   }
 }
