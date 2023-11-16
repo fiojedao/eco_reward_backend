@@ -5,4 +5,6 @@ const materialExchangeController = require("../controllers/materialExchangeContr
 
 router.get("/", materialExchangeController.get);
 
+router.get("/:id", materialExchangeController.getById);
+
 module.exports = router;

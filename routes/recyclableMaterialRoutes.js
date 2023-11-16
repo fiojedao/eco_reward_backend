@@ -7,4 +7,10 @@ router.get("/", recyclableMaterialController.get);
 
 router.get("/:id", recyclableMaterialController.getById);
 
+router.post("/", recyclableMaterialController.create);
+
+router.put("/:id", recyclableMaterialController.update);
+
+router.delete("/:id", recyclableMaterialController.delete);
+
 module.exports = router;

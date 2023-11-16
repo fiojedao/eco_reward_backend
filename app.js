@@ -15,6 +15,7 @@ const materialExchangeRoutes = require("./routes/materialExchangeRoutes");
 const centerRouter = require("./routes/centerRoutes");
 const userRouter = require("./routes/userRoutes");
 const recyclableMaterialRoutes = require("./routes/recyclableMaterialRoutes");
+const addressRoute = require("./routes/addressRoute");
 
 // Acceder a la configuracion del archivo .env
 dotEnv.config();
@@ -36,10 +37,12 @@ app.use(
 );
 
 //---- Definir rutas ----
-app.use("/materialexchange/", materialExchangeRoutes);
-app.use("/center/", centerRouter);
-app.use("/user/", userRouter);
-app.use("/material/", recyclableMaterialRoutes);
+
+app.use("/api/materialexchange/", materialExchangeRoutes);
+app.use("/api/center/", centerRouter);
+app.use("/api/user/", userRouter);
+app.use("/api/material/", recyclableMaterialRoutes);
+app.use("/api/address/", addressRoute);
 
 // Servidor
 app.listen(port, () => {
