@@ -32,20 +32,31 @@ class centerService {
 
   async getCenterById(id) {
     try {
-      return await prisma.recycling_Center.findUnique({
+      const center = await prisma.recycling_Center.findUnique({
         where: {
           centerID: id,
         },
         include: {
           Address: true,
           User: true,
-          Center_Material: true,
+          Center_Material: {
+            include: {
+              Recyclable_Material: true,
+            },
+          },
+          material_exchanges: true,
         },
       });
+      const recyclableMaterials = center.Center_Material.map(item => item.Recyclable_Material);
+      return {
+        ...center,
+        Recyclable_Material: recyclableMaterials,
+      };
     } catch (error) {
       throw new Error(`Error fetching center by ID: ${error.message}`);
     }
   }
+  
 
   async createCenter(centerData) {
     try {
