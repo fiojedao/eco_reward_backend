@@ -1,151 +1,171 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 class centerService {
-    async getAllCenters() {
-        try {
-            return await prisma.recycling_Center.findMany({
-            orderBy: {
-                name: "asc",
-            },
-            include: {
-                Address: true,
-                material_exchanges: true,
-            },
-            });
-        } catch (error) {
-            throw new Error(`Error fetching all centers: ${error.message}`);
-        }
-    }
-
-    async getMaterialList() {
+  async getAllCenters() {
     try {
-        return await prisma.recyclable_Material.findMany({
+      return await prisma.recycling_Center.findMany({
         orderBy: {
-            name: "asc",
-        },
-        });
-    } catch (error) {
-        throw new Error(`Error fetching material list: ${error.message}`);
-    }
-    }
-
-    async getCenterById(id) {
-    try {
-        return await prisma.recycling_Center.findUnique({
-        where: {
-            centerID: id,
+          name: "asc",
         },
         include: {
-            Address: true,
-            User: true,
-            Center_Material: true,
+          Address: true,
+          material_exchanges: true,
         },
-        });
+      });
     } catch (error) {
-        throw new Error(`Error fetching center by ID: ${error.message}`);
+      throw new Error(`Error fetching all centers: ${error.message}`);
     }
-    }
+  }
 
-    async createCenter(centerData) {
+  async getMaterialList() {
     try {
-        const { province, canton, district, exact_address, name, phone, operating_hours, administrator_userID, accepted_materials } = centerData;
-
-        const newAddress = await prisma.addresses.create({
-        data: {
-            province,
-            canton,
-            district,
-            exact_address,
+      return await prisma.recyclable_Material.findMany({
+        orderBy: {
+          name: "asc",
         },
-        });
+      });
+    } catch (error) {
+      throw new Error(`Error fetching material list: ${error.message}`);
+    }
+  }
 
-        const newCenter = await prisma.recycling_Center.create({
+  async getCenterById(id) {
+    try {
+      return await prisma.recycling_Center.findUnique({
+        where: {
+          centerID: id,
+        },
+        include: {
+          Address: true,
+          User: true,
+          Center_Material: true,
+        },
+      });
+    } catch (error) {
+      throw new Error(`Error fetching center by ID: ${error.message}`);
+    }
+  }
+
+  async createCenter(centerData) {
+    try {
+      const {
+        province,
+        canton,
+        district,
+        exact_address,
+        name,
+        phone,
+        operating_hours,
+        administrator_userID,
+        accepted_materials,
+      } = centerData;
+
+      const newAddress = await prisma.addresses.create({
         data: {
-            name,
-            addressID: newAddress.addressID,
-            phone,
-            operating_hours,
-            administrator_userID,
-            status: "Active",
-            Center_Material: {
+          province,
+          canton,
+          district,
+          exact_address,
+        },
+      });
+
+      const newCenter = await prisma.recycling_Center.create({
+        data: {
+          name,
+          addressID: newAddress.addressID,
+          phone,
+          operating_hours,
+          administrator_userID,
+          status: "Active",
+          Center_Material: {
             connect: accepted_materials,
-            },
+          },
         },
-        });
+      });
 
-        return newCenter;
+      return newCenter;
     } catch (error) {
-        throw new Error(`Error creating center: ${error.message}`);
+      throw new Error(`Error creating center: ${error.message}`);
     }
-    }
+  }
 
-    async updateCenter(id, updatedCenterData) {
+  async updateCenter(id, updatedCenterData) {
     try {
-        const { province, canton, district, exact_address, name, phone, operating_hours, administrator_userID, Center_Material } = updatedCenterData;
+      const {
+        province,
+        canton,
+        district,
+        exact_address,
+        name,
+        phone,
+        operating_hours,
+        administrator_userID,
+        Center_Material,
+      } = updatedCenterData;
 
-        const oldCenter = await prisma.recycling_Center.findUnique({
+      const oldCenter = await prisma.recycling_Center.findUnique({
         where: {
-            centerID: id,
+          centerID: id,
         },
         include: {
-            Address: true,
-            User: true,
-            Center_Material: true,
+          Address: true,
+          User: true,
+          Center_Material: true,
         },
-        });
+      });
 
-        await prisma.addresses.update({
+      await prisma.addresses.update({
         where: {
-            addressID: oldCenter.Address.addressID,
+          addressID: oldCenter.Address.addressID,
         },
         data: {
-            province,
-            canton,
-            district,
-            exact_address,
+          province,
+          canton,
+          district,
+          exact_address,
         },
-        });
+      });
 
-        const updatedCenter = await prisma.recycling_Center.update({
+      const updatedCenter = await prisma.recycling_Center.update({
         where: {
-            centerID: id,
+          centerID: id,
         },
         data: {
-            name,
-            addressID: oldCenter.Address.addressID,
-            phone,
-            operating_hours,
-            administrator_userID,
-            status: "Active",
+          name,
+          addressID: oldCenter.Address.addressID,
+          phone,
+          operating_hours,
+          administrator_userID,
+          status: "Active",
         },
-        });
+      });
 
-        for (const material of oldCenter.Center_Material) {
+      for (const material of oldCenter.Center_Material) {
         await prisma.center_Material.delete({
-            where: {
+          where: {
             centerID_materialID: {
-                centerID: material.centerID,
-                materialID: material.materialID,
+              centerID: id,
+              materialID: material.materialID,
             },
-            },
+          },
         });
-        }
+      }
 
-        for (const material of Center_Material) {
+      for (const material of Center_Material) {
         await prisma.center_Material.create({
-            data: {
-            centerID: material.centerID,
+          data: {
+            centerID: id,
             materialID: material.materialID,
-            },
+          },
         });
-        }
+      }
 
-        return updatedCenter;
+      return updatedCenter;
     } catch (error) {
-        throw new Error(`Error updating center: ${error.message}`);
+      throw new Error(`Error updating center: ${error.message}`);
     }
-    }
+  }
 }
 
 module.exports = centerService;
