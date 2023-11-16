@@ -7,6 +7,8 @@ router.get("/", materialExchangeController.get);
 
 router.get("/:id", materialExchangeController.getById);
 
+router.post("/", materialExchangeController.createMaterialExchange);
+
 router.get("/exchangesByUserid/:id", materialExchangeController.getAllExchangesByUserId);
 
 router.get("/administratorUserId/:id", materialExchangeController.getAllExchangesByAdministratorUserId);

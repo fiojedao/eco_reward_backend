@@ -54,6 +54,18 @@ module.exports.getAllExchangesByAdministratorUserId = async (request, response, 
   }
 };
 
+module.exports.createMaterialExchange = async (request, response, next) => {
+  const data = request.body;
+
+  try {
+    const newDetails = await recyclingMaterialExchangeService.createExchange(data.userId, data.exchangeDetails);
+    response.json(newDetails);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.deleteExchangeById = async (request, response, next) => {
   const exchangeId = parseInt(request.params.id);
 

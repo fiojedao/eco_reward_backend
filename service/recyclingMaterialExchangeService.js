@@ -27,7 +27,7 @@ class recyclingMaterialExchangeService {
 
   async getExchangeById(exchangeId) {
     try {
-      return await prisma.recycling_Material_Exchange.findUnique({
+      const exchange = await prisma.recycling_Material_Exchange.findUnique({
         where: {
           exchangeID: exchangeId,
         },
@@ -38,12 +38,46 @@ class recyclingMaterialExchangeService {
             },
           },
           Recycling_Center: true,
+          client_user: true,
         },
       });
+  
+      return this.formatExchangeForInvoice(exchange);
     } catch (error) {
       throw new Error(`Error fetching exchange by ID: ${error.message}`);
     }
   }
+
+  formatExchangeForInvoice(exchange) {
+    const formattedExchange = {
+      exchangeID: exchange.exchangeID,
+      exchange_date: exchange.exchange_date,
+      client: {
+        name: exchange.client_user.name,
+      },
+      recycling_center: {
+        name: exchange.Recycling_Center.name,
+      },
+      exchange_details: [],
+      total_eco_coins: 0,
+    };
+  
+    exchange.Exchange_Material_Details.forEach((detail) => {
+      const subtotal = detail.quantity * detail.Recycling_Material.price;
+      formattedExchange.total_eco_coins += detail.eco_coins;
+  
+      formattedExchange.exchange_details.push({
+        material_name: detail.Recycling_Material.name,
+        quantity: detail.quantity,
+        material_price: detail.Recycling_Material.price,
+        subtotal: subtotal,
+        eco_coins: detail.eco_coins,
+      });
+    });
+  
+    return formattedExchange;
+  }
+  
 
   async getAllExchangesByUserId(userId) {
     try {
@@ -92,7 +126,50 @@ class recyclingMaterialExchangeService {
       throw new Error(`Error fetching exchanges for administrator user: ${error.message}`);
     }
   }
-
+  async createExchange(userId, exchangeDetails) {
+    try {
+      const exchange = await prisma.recycling_Material_Exchange.create({
+        data: {
+          client_user: {
+            connect: {
+              userID: userId
+            }
+          },
+          exchange_date: new Date(), 
+          Recycling_Center: {
+            connect: {
+              centerID: exchangeDetails.centerID
+            }
+          },
+          Exchange_Material_Details: {
+            create: exchangeDetails.Exchange_Material_Details.map(detail => ({
+              Recycling_Material: {
+                connect: {
+                  materialID: detail.materialID
+                }
+              },
+              quantity: detail.quantity,
+              eco_coins: detail.eco_coins
+            }))
+          }
+        },
+        include: {
+          Exchange_Material_Details: {
+            include: {
+              Recycling_Material: true
+            }
+          },
+          Recycling_Center: true,
+          client_user: true
+        }
+      });
+  
+      return exchange;
+    } catch (error) {
+      throw new Error(`Error creating exchange: ${error.message}`);
+    }
+  }
+  
   async deleteExchangeById(exchangeId) {
     try {
       return await prisma.recycling_Material_Exchange.delete({
