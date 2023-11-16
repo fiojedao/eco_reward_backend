@@ -1,89 +1,54 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const RecyclableMaterialService = require('../service/recyclableMaterialService');
+const recyclableMaterialService = new RecyclableMaterialService();
 
 module.exports.get = async (request, response, next) => {
-  const centers = await prisma.recyclable_Material.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  });
-  response.json(centers);
+  try {
+    const materials = await recyclableMaterialService.getAllMaterials();
+    response.json(materials);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
 };
 
 module.exports.getById = async (request, response, next) => {
-  let id = parseInt(request.params.id);
-  const center = await prisma.recyclable_Material.findUnique({
-    where: {
-      materialID: id,
-    },
-  });
-  response.json(center);
-};
-
-module.exports.create = async (request, response, next) => {
-  const { name, description, image, unit_of_measure, price, color_representation, centerID } = request.body;
+  const materialId = parseInt(request.params.id);
 
   try {
-    const newMaterial = await prisma.recyclable_Material.create({
-      data: {
-        name,
-        description,
-        image,
-        unit_of_measure,
-        price,
-        color_representation,
-      },
-    });
+    const material = await recyclableMaterialService.getMaterialById(materialId);
 
-    const { materialID } = newMaterial;
-
-    const association = await prisma.center_Material.create({
-      data: {
-        centerID,
-        materialID,
-      },
-    });
-
-    if (!association && newMaterial) {
+    if (!material) {
       return response.status(404).json({ error: 'Recyclable material not found' });
     }
 
+    response.json(material);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports.create = async (request, response, next) => {
+  const materialData = request.body;
+
+  try {
+    const newMaterial = await recyclableMaterialService.createMaterial(materialData);
     response.json(newMaterial);
   } catch (error) {
-    console.error('Error creating recyclable material:', error);
+    console.error(error.message);
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 module.exports.update = async (request, response, next) => {
   const materialId = parseInt(request.params.id);
-  const { name, description, image, unit_of_measure, price, color_representation, centerID } = request.body;
+  const materialData = request.body;
 
   try {
-    const updatedMaterial = await prisma.Recyclable_Material.update({
-      where: {
-        materialID: materialId,
-      },
-      data: {
-        name,
-        description,
-        image,
-        unit_of_measure,
-        price,
-        color_representation,
-      },
-      include: {
-        recycling_centers: {
-          include: {
-            Center_Material: true,
-          },
-        },
-      },
-    });
-
+    const updatedMaterial = await recyclableMaterialService.updateMaterial(materialId, materialData);
     response.json(updatedMaterial);
   } catch (error) {
-    console.error('Error updating recyclable material:', error);
+    console.error(error.message);
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -92,23 +57,10 @@ module.exports.delete = async (request, response, next) => {
   const materialId = parseInt(request.params.id);
 
   try {
-    // Eliminar la asociación del material con los centros
-    await prisma.center_Material.deleteMany({
-      where: {
-        materialID: materialId,
-      },
-    });
-
-    // Eliminar el material reciclable
-    const deletedMaterial = await prisma.recyclable_Material.delete({
-      where: {
-        materialID: materialId,
-      },
-    });
-
+    const deletedMaterial = await recyclableMaterialService.deleteMaterial(materialId);
     response.json(deletedMaterial);
   } catch (error) {
-    console.error('Error deleting recyclable material:', error);
+    console.error(error.message);
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };

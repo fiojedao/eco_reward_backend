@@ -11,7 +11,6 @@ class addressService {
     }
   }
   
-
   async getAllAddressesByUserId(userId) {
     try {
       const userAddresses = await prisma.user_Address.findMany({
@@ -33,7 +32,6 @@ class addressService {
     }
   }
   
-
   async getByAddressId(addressId) {
     try {
       const address = await prisma.Addresses.findUnique({
@@ -52,7 +50,6 @@ class addressService {
     }
   }
   
-
   async createAddressAndAssociation({userId, provinceId, province, cantonId, canton, districtId, district, exact_address}) {
     try {
       const newAddress = await prisma.Addresses.create({

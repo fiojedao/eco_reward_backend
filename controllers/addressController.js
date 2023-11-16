@@ -1,7 +1,6 @@
 const AddressService = require('../service/addressService');
 const addressService = new AddressService();
 
-
 //adress list
 module.exports.getAll = async (request, response, next) => {
   try {

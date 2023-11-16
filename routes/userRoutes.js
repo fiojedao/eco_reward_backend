@@ -11,7 +11,7 @@ router.get("/administrators", userController.getAdministrators);
 // Ruta para obtener un usuario por ID
 router.get("/:id", userController.getById);
 
-router.get("/:id/coupon", userController.getUserCouponExchange);
+router.get('/:id/coupons', userController.getUserCouponExchange);
 
 /*
 // Ruta anidada para obtener los cupones de un usuario por ID
