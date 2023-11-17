@@ -36,21 +36,16 @@ class recyclableMaterialService {
           unit_of_measure,
           price,
           color_representation,
+          Center_Material: {
+            create: {
+              centerID,
+            },
+          },
+        },
+        include: {
+          Center_Material: true,
         },
       });
-
-      const { materialID } = newMaterial;
-
-      const association = await prisma.center_Material.create({
-        data: {
-          centerID,
-          materialID,
-        },
-      });
-
-      if (!association && newMaterial) {
-        throw new Error('Recyclable material not found');
-      }
 
       return newMaterial;
     } catch (error) {
@@ -58,11 +53,11 @@ class recyclableMaterialService {
     }
   }
 
-  async updateMaterial(materialId, { name, description, image, unit_of_measure, price, color_representation, centerID }) {
+  async updateMaterial(materialID, { name, description, image, unit_of_measure, price, color_representation }) {
     try {
-      return await prisma.recyclable_Material.update({
+      const updatedMaterial = await prisma.recyclable_Material.update({
         where: {
-          materialID: materialId,
+          materialID,
         },
         data: {
           name,
@@ -73,18 +68,20 @@ class recyclableMaterialService {
           color_representation,
         },
         include: {
-          recycling_centers: {
-            include: {
-              Center_Material: true,
-            },
-          },
+          Center_Material: true,
         },
       });
+  
+      if (!updatedMaterial) {
+        throw new Error('Recyclable material not found');
+      }
+  
+      return updatedMaterial;
     } catch (error) {
       throw new Error(`Error updating recyclable material: ${error.message}`);
     }
   }
-
+  
   async deleteMaterial(materialId) {
     try {
       // Eliminar la asociación del material con los centros
