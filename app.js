@@ -5,10 +5,9 @@ const { request, response } = require("express");
 const cors = require("cors");
 const logger = require("morgan");
 const app = express();
-const prism = new PrismaClient();
 
 // Configurar una ruta para servir imágenes estáticas desde la carpeta
-app.use("/images", express.static(__dirname + "/images"));
+//app.use("/images", express.static(__dirname + "/images"));
 
 //---Archivos de rutas---
 const materialExchangeRoutes = require("./routes/materialExchangeRoutes");
@@ -20,6 +19,7 @@ const ecoCoinsRoute = require("./routes/ecoCoinsRoute");
 const couponExchangeRoute = require("./routes/couponExchangeRoute");
 const couponExchangeHistoryRoute = require("./routes/couponExchangeHistoryRoute");
 const exchangeMaterialDetailsRoute = require("./routes/exchangeMaterialDetailsRoute");
+//const imageUploadRoute = require("./routes/imageUploadRoute");
 
 // Acceder a la configuracion del archivo .env
 dotEnv.config();
@@ -51,6 +51,7 @@ app.use("/api/ecocoins/", ecoCoinsRoute);
 app.use("/api/couponexchange/", couponExchangeRoute);
 app.use("/api/couponexchangehistory/", couponExchangeHistoryRoute);
 app.use("/api/exchangematerialdetails/", exchangeMaterialDetailsRoute);
+//app.use("/api/imageUpload/", imageUploadRoute);
 
 // Servidor
 app.listen(port, () => {
