@@ -57,6 +57,32 @@ class centerService {
     }
   }
   
+  async getCenterByUserId(id) {
+    try {
+      const center = await prisma.recycling_Center.findFirst({
+        where: {
+          administrator_userID: id,
+        },
+        include: {
+          Address: true,
+          User: true,
+          Center_Material: {
+            include: {
+              Recyclable_Material: true,
+            },
+          },
+          material_exchanges: true,
+        },
+      });
+      const recyclableMaterials = center.Center_Material.map(item => item.Recyclable_Material);
+      return {
+        ...center,
+        Recyclable_Material: recyclableMaterials,
+      };
+    } catch (error) {
+      throw new Error(`Error fetching center by ID: ${error.message}`);
+    }
+  }
 
   async createCenter(centerData) {
     try {

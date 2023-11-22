@@ -38,6 +38,23 @@ module.exports.getById = async (request, response, next) => {
   }
 };
 
+module.exports.getByUserId = async (request, response, next) => {
+  const id = parseInt(request.params.id);
+
+  try {
+    const center = await centerService.getCenterByUserId(id);
+
+    if (!center) {
+      return response.status(404).json({ error: 'Center not found' });
+    }
+
+    response.json(center);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.create = async (request, response, next) => {
   const centerData = request.body;
 
