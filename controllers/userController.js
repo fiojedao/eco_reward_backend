@@ -11,9 +11,10 @@ module.exports.get = async (request, response, next) => {
   }
 };
 
-module.exports.getAdministrators = async (request, response, next) => {
+module.exports.getUserByRole = async (request, response, next) => {
   try {
-    const administrators = await userService.getAdministrators();
+    const id = parseInt(request.params.id);
+    const administrators = await userService.getUserByRole(id);
     response.json(administrators);
   } catch (error) {
     console.error(error.message);

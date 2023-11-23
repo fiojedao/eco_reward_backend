@@ -214,7 +214,7 @@
 					"response": []
 				},
 				{
-					"name": "GetAllAdministrator",
+					"name": "GetUserByRole",
 					"request": {
 						"method": "GET",
 						"header": [],

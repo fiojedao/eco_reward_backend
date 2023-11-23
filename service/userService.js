@@ -14,18 +14,18 @@ class userService {
     }
   }
 
-  async getAdministrators() {
+  async getUserByRole(role) {
     try {
       return await prisma.user.findMany({
         where: {
-          role: 2,
+          role: role,
         },
         orderBy: {
           name: 'asc',
         },
       });
     } catch (error) {
-      throw new Error(`Error fetching administrators: ${error.message}`);
+      throw new Error(`Error fetching user by role: ${error.message}`);
     }
   }
 
