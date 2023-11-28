@@ -38,7 +38,24 @@ class recyclableMaterialService {
     } catch (error) {
       throw new Error(`Error fetching recyclable material by ID: ${error.message}`);
     }
+  }  
+  
+  async getMaterialByCenter(id) {
+    try {
+      return await prisma.center_Material.findMany({
+        where: {
+          centerID: id
+        },
+        include: {
+          Recyclable_Material: true,
+          Recycling_Center: true
+        }
+      });
+    } catch (error) {
+      throw new Error(`Error fetching recyclable material by ID: ${error.message}`);
+    }
   }
+  
 
   async createMaterial({ name, description, image, unit_of_measure, price, color_representation, centerID }) {
     try {

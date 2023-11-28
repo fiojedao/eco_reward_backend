@@ -28,6 +28,23 @@ module.exports.getById = async (request, response, next) => {
   }
 };
 
+module.exports.getMaterialByCenter = async (request, response, next) => {
+  const centerId = parseInt(request.params.id);
+
+  try {
+    const material = await recyclableMaterialService.getMaterialByCenter(centerId);
+
+    if (!material) {
+      return response.status(404).json({ error: 'Recyclable material not found' });
+    }
+
+    response.json(material);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.create = async (request, response, next) => {
   const materialData = request.body;
 

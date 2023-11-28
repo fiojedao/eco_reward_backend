@@ -279,6 +279,26 @@
 					"response": []
 				},
 				{
+					"name": "GetMaterialByUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/material/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"material",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create",
 					"request": {
 						"method": "POST",
@@ -604,10 +624,22 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Create",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/materialexchange/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"materialexchange",
+								""
+							]
+						}
 					},
 					"response": []
 				}
