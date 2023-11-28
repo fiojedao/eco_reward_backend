@@ -50,15 +50,21 @@ class recyclingMaterialExchangeService {
       exchangeID: exchange.exchangeID,
       exchange_date: exchange.exchange_date,
       client: {
+        userID: exchange.client_user.userID,
         name: exchange.client_user.name,
+        email: exchange.client_user.email,
+        identification: exchange.client_user.identification,
       },
       recycling_center: {
+        centerID: exchange.Recycling_Center.centerID,
         name: exchange.Recycling_Center.name,
+        phone: exchange.Recycling_Center.phone,
+        operating_hours: exchange.Recycling_Center.operating_hours
       },
       exchange_details: [],
       total_eco_coins: 0,
     };
-  
+
     exchange.Exchange_Material_Details.forEach((detail) => {
       const subtotal = detail.quantity * detail.Recycling_Material.price;
       formattedExchange.total_eco_coins += detail.eco_coins;
@@ -69,6 +75,7 @@ class recyclingMaterialExchangeService {
         material_price: detail.Recycling_Material.price,
         subtotal: subtotal,
         eco_coins: detail.eco_coins,
+        Recycling_Material: detail.Recycling_Material
       });
     });
   
