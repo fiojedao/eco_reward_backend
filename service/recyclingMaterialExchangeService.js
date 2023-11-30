@@ -106,13 +106,11 @@ class recyclingMaterialExchangeService {
     }
   }
 
-  async getAllExchangesByAdministratorUserId(administratorUserId) {
+  async getAllExchangesByCenterId(centerId) {
     try {
-      return await prisma.recycling_Material_Exchange.findMany({
+      var data = await prisma.recycling_Material_Exchange.findMany({
         where: {
-          Recycling_Center: {
-            administrator_userID: administratorUserId,
-          },
+          centerID: centerId,
         },
         orderBy: {
           exchange_date: "asc",
@@ -124,12 +122,106 @@ class recyclingMaterialExchangeService {
             },
           },
           Recycling_Center: true,
+          client_user: {
+            select: {
+              name: true,
+              email: true,
+              identification: true,
+              role: true
+            },
+          },
         },
       });
+
+      const calculateTotalEcoCoins = (exchange) => {
+        return exchange.Exchange_Material_Details.reduce((total, detail) => {
+          return total + detail.eco_coins;
+        }, 0); 
+      };
+      
+      const exchangesWithTotalEcoCoins = data.map((exchange) => {
+        return {
+          ...exchange,
+          total_eco_coins: calculateTotalEcoCoins(exchange),
+        };
+      });
+
+      return exchangesWithTotalEcoCoins
+      
     } catch (error) {
-      throw new Error(`Error fetching exchanges for administrator user: ${error.message}`);
+      throw new Error(`Error fetching exchanges for center ID: ${error.message}`);
     }
   }
+
+  async getAllExchangesForAllCenters(userId) {
+    try {
+      const user = await prisma.User.findUnique({
+        where: {
+          userID: userId,
+        },
+        select: {
+          role: true,
+        },
+      });
+
+      if(user?.role !== 1){
+        throw new Error(`Error checking user role: ${error.message}`);
+      }
+
+      const allCentersData = await prisma.recycling_Center.findMany();
+  
+      const exchangesByCenter = await Promise.all(
+        allCentersData.map(async (center) => {
+          const centerExchanges = await prisma.recycling_Material_Exchange.findMany({
+            where: {
+              centerID: center.centerID,
+            },
+            orderBy: {
+              exchange_date: "asc",
+            },
+            include: {
+              Exchange_Material_Details: {
+                include: {
+                  Recycling_Material: true,
+                },
+              },
+              Recycling_Center: true,
+              client_user: {
+                select: {
+                  name: true,
+                  email: true,
+                  identification: true,
+                  role: true,
+                },
+              },
+            },
+          });
+  
+          const calculateTotalEcoCoins = (exchange) => {
+            return exchange.Exchange_Material_Details.reduce((total, detail) => {
+              return total + detail.eco_coins;
+            }, 0);
+          };
+  
+          const exchangesWithTotalEcoCoins = centerExchanges.map((exchange) => {
+            return {
+              ...exchange,
+              total_eco_coins: calculateTotalEcoCoins(exchange),
+            };
+          });
+  
+          return exchangesWithTotalEcoCoins;
+        })
+      );
+  
+      return exchangesByCenter.flat();
+  
+    } catch (error) {
+      throw new Error(`Error fetching exchanges for all centers: ${error.message}`);
+    }
+  }
+  
+  
   async createExchange(userId, exchangeDetails) {
     try {
       const exchange = await prisma.recycling_Material_Exchange.create({

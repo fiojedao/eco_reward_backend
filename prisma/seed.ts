@@ -53,8 +53,6 @@ async function main() {
         },
       });
     }
-
-    console.log(`Centro de reciclaje creado: ${createdCenter.name}`);
   }
 
   await prisma.coupon_Exchange_History.createMany({

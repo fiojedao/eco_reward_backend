@@ -47,4 +47,12 @@ export const users = [
     phone: "2446 2352",
     role: 3,
   },
+  {
+    name: "Rafael",
+    email: "rafael@cliente.com",
+    password: "123456",
+    identification: "4 3752 7345",
+    phone: "2448 4337",
+    role: 3,
+  },
 ];

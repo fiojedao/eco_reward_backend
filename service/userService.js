@@ -6,7 +6,7 @@ class userService {
     try {
       return await prisma.user.findMany({
         orderBy: {
-          name: 'asc',
+          role: 'asc',
         },
       });
     } catch (error) {
@@ -21,7 +21,7 @@ class userService {
           role: role,
         },
         orderBy: {
-          name: 'asc',
+          role: 'asc',
         },
       });
     } catch (error) {
