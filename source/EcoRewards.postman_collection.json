@@ -55,7 +55,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/center/1",
+							"raw": "localhost:3000/api/center/user/2",
 							"host": [
 								"localhost"
 							],
@@ -63,7 +63,8 @@
 							"path": [
 								"api",
 								"center",
-								"1"
+								"user",
+								"2"
 							]
 						}
 					},
@@ -219,7 +220,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/user/administrators",
+							"raw": "localhost:3000/api/user/role/3",
 							"host": [
 								"localhost"
 							],
@@ -227,7 +228,38 @@
 							"path": [
 								"api",
 								"user",
-								"administrators"
+								"role",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"email\": \"prueba@prueba.com\",\r\n    \"password\":\"Uno@2345\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/user/login/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login",
+								""
 							]
 						}
 					},
@@ -587,7 +619,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/materialexchange/exchangesByUserid/3",
+							"raw": "localhost:3000/api/materialexchange/exchangesByUserid/4",
 							"host": [
 								"localhost"
 							],
@@ -596,19 +628,19 @@
 								"api",
 								"materialexchange",
 								"exchangesByUserid",
-								"3"
+								"4"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "GetByAdministratorId",
+					"name": "GetByCenterId",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/materialexchange/administratorUserId/4",
+							"raw": "localhost:3000/api/materialexchange/center/4",
 							"host": [
 								"localhost"
 							],
@@ -616,7 +648,28 @@
 							"path": [
 								"api",
 								"materialexchange",
-								"administratorUserId",
+								"center",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByAdmin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/materialexchange/center/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"materialexchange",
+								"center",
 								"4"
 							]
 						}
