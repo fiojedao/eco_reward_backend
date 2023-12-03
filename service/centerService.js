@@ -11,6 +11,11 @@ class centerService {
         include: {
           Address: true,
           material_exchanges: true,
+          Center_Material: {
+            include: {
+              Recyclable_Material: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -47,7 +52,9 @@ class centerService {
           material_exchanges: true,
         },
       });
-      const recyclableMaterials = center.Center_Material.map(item => item.Recyclable_Material);
+      const recyclableMaterials = center.Center_Material.map(
+        (item) => item.Recyclable_Material
+      );
       return {
         ...center,
         Recyclable_Material: recyclableMaterials,
@@ -56,7 +63,7 @@ class centerService {
       throw new Error(`Error fetching center by ID: ${error.message}`);
     }
   }
-  
+
   async getCenterByUserId(id) {
     try {
       const center = await prisma.recycling_Center.findFirst({
@@ -74,7 +81,9 @@ class centerService {
           material_exchanges: true,
         },
       });
-      const recyclableMaterials = center.Center_Material.map(item => item.Recyclable_Material);
+      const recyclableMaterials = center.Center_Material.map(
+        (item) => item.Recyclable_Material
+      );
       return {
         ...center,
         Recyclable_Material: recyclableMaterials,
@@ -95,7 +104,7 @@ class centerService {
         phone,
         operating_hours,
         administrator_userID,
-        accepted_materials,
+        Center_Material,
       } = centerData;
 
       const newAddress = await prisma.addresses.create({
@@ -115,11 +124,22 @@ class centerService {
           operating_hours,
           administrator_userID,
           status: "Active",
-          Center_Material: {
-            connect: accepted_materials,
-          },
+          /*           Center_Material: {
+            connect: Center_Material,
+          }, */
         },
       });
+
+      for (const material of Center_Material) {
+        let materialID = material.materialID;
+        console.log(materialID);
+        await prisma.center_Material.create({
+          data: {
+            centerID: newCenter.centerID,
+            materialID: materialID,
+          },
+        });
+      }
 
       return newCenter;
     } catch (error) {
