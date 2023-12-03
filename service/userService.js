@@ -52,6 +52,35 @@ class userService {
     }
   }
 
+  async createUsers(users) {
+    try {
+      const hashedUsers = await Promise.all(
+        users.map(async (user) => {
+          const { name, email, password, identification, phone, role } = user;
+          const hashedPassword = await bcrypt.hash(password, 10);
+          return {
+            name,
+            email,
+            password: hashedPassword,
+            identification,
+            phone,
+            role,
+          };
+        })
+      );
+  
+      const createdUsers = await prisma.user.createMany({
+        data: hashedUsers,
+      });
+  
+      return createdUsers;
+    } catch (error) {
+      console.error(error);
+      throw new Error(`Error creating users: ${error.message}`);
+    }
+  }
+  
+
   async getUserByRole(role) {
     try {
       return await prisma.user.findMany({
