@@ -27,6 +27,7 @@ model User {
   identification              String?
   phone                       String?
   role                        Int
+  status                      Boolean
   User_Role                   User_Role                     @relation(fields: [role], references: [roleID])
   addresses                   User_Address[]
   Recycling_Center            Recycling_Center[]

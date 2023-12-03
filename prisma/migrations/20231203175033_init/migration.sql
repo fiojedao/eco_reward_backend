@@ -16,6 +16,7 @@ CREATE TABLE `User` (
     `identification` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NULL,
     `role` INTEGER NOT NULL,
+    `status` BOOLEAN NOT NULL,
 
     PRIMARY KEY (`userID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

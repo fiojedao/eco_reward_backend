@@ -20,6 +20,17 @@ module.exports.existUser = async (request, response, next) => {
   }
 };
 
+module.exports.updateUserStatus = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const status = Boolean(request.body.status);
+    const users = await userService.updateUserStatus(id, status);
+    response.json(users);
+  } catch (error) {
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.login = async (request, response, next) => {
   try {
     const userBody = request.body;

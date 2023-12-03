@@ -5,6 +5,7 @@ export const users = [
     password: "123456",
     identification: "1 4185 5261",
     phone: "2446 2352",
+    status: true,
     role: 1,
   },
   {
@@ -13,6 +14,7 @@ export const users = [
     password: "123456",
     identification: "1 1732 4856",
     phone: "2446 2352",
+    status: true,
     role: 2,
   },
   {
@@ -21,6 +23,7 @@ export const users = [
     password: "123456",
     identification: "1 2637 4256",
     phone: "2446 2352",
+    status: true,
     role: 2,
   },
   {
@@ -29,6 +32,7 @@ export const users = [
     password: "123456",
     identification: "1 1294 8167",
     phone: "2446 2352",
+    status: true,
     role: 2,
   },
   {
@@ -37,6 +41,7 @@ export const users = [
     password: "123456",
     identification: "1 9152 3627",
     phone: "2446 2352",
+    status: true,
     role: 2,
   },
   {
@@ -45,6 +50,7 @@ export const users = [
     password: "123456",
     identification: "1 4628 8316",
     phone: "2446 2352",
+    status: true,
     role: 3,
   },
   {
@@ -53,6 +59,7 @@ export const users = [
     password: "123456",
     identification: "4 3752 7154",
     phone: "2448 4337",
+    status: true,
     role: 3,
   },
 ];

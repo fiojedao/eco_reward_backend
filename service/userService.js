@@ -41,6 +41,7 @@ class userService {
           password: hashedPassword,
           identification,
           phone,
+          status: true,
           role: role
         },
       });
@@ -52,11 +53,31 @@ class userService {
     }
   }
 
+  async updateUserStatus(userId, status) {
+    try {
+      console.log(userId, status);
+      const updatedUser = await prisma.user.update({
+        where: {
+          userID: userId,
+        },
+        data: {
+          status: status,
+        },
+      });
+  
+      return updatedUser;
+    } catch (error) {
+      console.error(error);
+      throw new Error(`Error updating user status: ${error.message}`);
+    }
+  }
+  
+
   async createUsers(users) {
     try {
       const hashedUsers = await Promise.all(
         users.map(async (user) => {
-          const { name, email, password, identification, phone, role } = user;
+          const { name, email, password, identification, phone, status, role } = user;
           const hashedPassword = await bcrypt.hash(password, 10);
           return {
             name,
@@ -65,6 +86,7 @@ class userService {
             identification,
             phone,
             role,
+            status
           };
         })
       );
@@ -110,6 +132,10 @@ class userService {
         throw new Error('Usuario no encontrado');
       }
   
+      if (!user.status) {
+        throw new Error('El usuario está deshabilitado');
+      }
+  
       const passwordMatch = await bcrypt.compare(password, user.password);
   
       if (!passwordMatch) {
@@ -123,6 +149,7 @@ class userService {
       throw new Error(`Error al iniciar sesión: ${error.message}`);
     }
   }
+  
   
   async getUserById(id) {
     try {
