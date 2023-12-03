@@ -11,6 +11,8 @@ router.post("/", materialExchangeController.createMaterialExchange);
 
 router.get("/exchangesByUserid/:id", materialExchangeController.getAllExchangesByUserId);
 
-router.get("/administratorUserId/:id", materialExchangeController.getAllExchangesByAdministratorUserId);
+router.get("/center/:id", materialExchangeController.getAllExchangesByCenterId);
+
+router.get("/admin/:id", materialExchangeController.getAllExchangesForAllCenters);
 
 module.exports = router;

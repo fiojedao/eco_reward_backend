@@ -36,19 +36,31 @@ module.exports.getAllExchangesByUserId = async (request, response, next) => {
     response.json(exchanges);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: 'Internal Server Error: ' + error.message });
   }
 };
 
-module.exports.getAllExchangesByAdministratorUserId = async (request, response, next) => {
+module.exports.getAllExchangesByCenterId = async (request, response, next) => {
   const administratorUserId = parseInt(request.params.id);
 
   try {
-    const exchanges = await recyclingMaterialExchangeService.getAllExchangesByAdministratorUserId(administratorUserId);
+    const exchanges = await recyclingMaterialExchangeService.getAllExchangesByCenterId(administratorUserId);
     response.json(exchanges);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: 'Internal Server Error: ' + error.message });
+  }
+};
+
+module.exports.getAllExchangesForAllCenters = async (request, response, next) => {
+  const admin = parseInt(request.params.id);
+
+  try {
+    const exchanges = await recyclingMaterialExchangeService.getAllExchangesForAllCenters(admin);
+    response.json(exchanges);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error: ' + error.message });
   }
 };
 
@@ -60,7 +72,7 @@ module.exports.createMaterialExchange = async (request, response, next) => {
     response.json(newDetails);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: 'Internal Server Error: ' + error.message });
   }
 };
 
@@ -77,6 +89,6 @@ module.exports.deleteExchangeById = async (request, response, next) => {
     response.json(deletedExchange);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: 'Internal Server Error: ' + error.message });
   }
 };
