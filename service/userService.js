@@ -157,6 +157,9 @@ class userService {
         where: {
           userID: id,
         },
+        include: {
+          addresses: true,
+        },
       });
 
       if (!user) {
