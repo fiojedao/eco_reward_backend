@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { prisma, bcrypt } = require('./../prisma/client/index');
 
 class exchangeMaterialDetailsService {
   async getAllDetails() {

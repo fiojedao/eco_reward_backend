@@ -6,8 +6,38 @@ module.exports.get = async (request, response, next) => {
     const users = await userService.getAllUsers();
     response.json(users);
   } catch (error) {
-    console.error(error.message);
     response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports.existUser = async (request, response, next) => {
+  try {
+    const email = request.params.email;
+    const users = await userService.validateEmail(email);
+    response.json(users);
+  } catch (error) {
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports.login = async (request, response, next) => {
+  try {
+    const userBody = request.body;
+    const users = await userService.loginUser(userBody);
+    response.json(users);
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
+};
+
+module.exports.create = async (request, response, next) => {
+  try {
+    const userBody = request.body;
+    console.log(userBody);
+    const users = await userService.createUser(userBody);
+    response.json(users);
+  } catch (error) {
+    response.status(500).json({ error: 'Internal Server Error: ' + error.message });
   }
 };
 
@@ -17,7 +47,6 @@ module.exports.getUserByRole = async (request, response, next) => {
     const administrators = await userService.getUserByRole(id);
     response.json(administrators);
   } catch (error) {
-    console.error(error.message);
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -34,7 +63,6 @@ module.exports.getById = async (request, response, next) => {
 
     response.json(user);
   } catch (error) {
-    console.error(error.message);
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -46,7 +74,6 @@ module.exports.getUserCouponExchange = async (request, response, next) => {
     const coupons = await userService.getUserCouponExchange(userId);
     response.json(coupons);
   } catch (error) {
-    console.error(error.message);
     response.status(500).json({ error: 'Error fetching user coupons' });
   }
 };

@@ -1,19 +1,16 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
-const multer = require('multer');
-const path = require('path');
+const { prisma, bcrypt } = require('./../prisma/client/index');
 
 // Configuración de Multer para el almacenamiento de imágenes
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, 'uploads/')); // Carpeta de destino en el servidor
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // Nombre de archivo único
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, 'uploads/')); // Carpeta de destino en el servidor
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + '-' + file.originalname); // Nombre de archivo único
+//   },
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 class recyclableMaterialService {
   async getAllMaterials() {

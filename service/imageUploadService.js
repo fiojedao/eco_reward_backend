@@ -1,5 +1,4 @@
-const multer = require('multer');
-const path = require('path');
+const { prisma, bcrypt } = require('./../prisma/client/index');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
