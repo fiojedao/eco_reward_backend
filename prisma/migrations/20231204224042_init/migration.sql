@@ -51,7 +51,7 @@ CREATE TABLE `Recycling_Center` (
     `addressID` INTEGER NOT NULL,
     `phone` VARCHAR(191) NULL,
     `operating_hours` VARCHAR(191) NULL,
-    `status` VARCHAR(191) NOT NULL,
+    `status` BOOLEAN NOT NULL,
     `administrator_userID` INTEGER NULL,
 
     PRIMARY KEY (`centerID`)

@@ -11,6 +11,17 @@ module.exports.get = async (request, response, next) => {
   }
 };
 
+module.exports.updateCenterStatus = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const status = Boolean(request.body.status);
+    const users = await centerService.updateCenterStatus(id, status);
+    response.json(users);
+  } catch (error) {
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.getMaterial = async (request, response, next) => {
   try {
     const materialList = await centerService.getMaterialList();

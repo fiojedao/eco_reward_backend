@@ -15,4 +15,6 @@ router.get("/user/:id", centerController.getByUserId);
 
 router.put("/:id", centerController.update);
 
+router.put('/update/status/:id', centerController.updateCenterStatus);
+
 module.exports = router;

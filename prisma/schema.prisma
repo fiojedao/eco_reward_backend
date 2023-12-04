@@ -63,7 +63,7 @@ model Recycling_Center {
   addressID            Int
   phone                String?
   operating_hours      String?
-  status               String
+  status               Boolean
   administrator_userID Int?
   User                 User?                         @relation(fields: [administrator_userID], references: [userID])
   Address              Addresses                     @relation(fields: [addressID], references: [addressID])

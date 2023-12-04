@@ -4,7 +4,7 @@ export const recycling_centers = [
     addressID: 4,
     phone: "123-456-7890",
     operating_hours: "Lunes a Viernes: 9:00 AM - 5:00 PM",
-    status: "Activo",
+    status: true,
     administrator_userID: 2,
     materials: [
       { centerID: 1, materialID: 1 },
@@ -16,7 +16,7 @@ export const recycling_centers = [
     addressID: 5,
     phone: "987-654-3210",
     operating_hours: "Lunes a Sábado: 8:00 AM - 6:00 PM",
-    status: "Activo",
+    status: true,
     administrator_userID: 3,
     materials: [
       { centerID: 2, materialID: 3 },
@@ -28,7 +28,7 @@ export const recycling_centers = [
     addressID: 6,
     phone: "555-555-5555",
     operating_hours: "Todos los días: 24 horas",
-    status: "Activo",
+    status: true,
     administrator_userID: 4,
     materials: [
       { centerID: 3, materialID: 1 },
@@ -41,7 +41,7 @@ export const recycling_centers = [
     addressID: 7,
     phone: "888-888-8888",
     operating_hours: "Lunes a Domingo: 7:00 AM - 7:00 PM",
-    status: "Activo",
+    status: true,
     administrator_userID: 5,
     materials: [
       { centerID: 4, materialID: 1 },

@@ -92,6 +92,24 @@ class centerService {
     }
   }
 
+  async updateCenterStatus(id, status) {
+    try {
+      const updatedCenter = await prisma.recycling_Center.update({
+        where: {
+          centerID: id,
+        },
+        data: {
+          status: status,
+        },
+      });
+  
+      return updatedCenter;
+    } catch (error) {
+      console.error(error);
+      throw new Error(`Error updating center status: ${error.message}`);
+    }
+  }
+
   async createCenter(centerData) {
     try {
       const {
@@ -122,7 +140,7 @@ class centerService {
           phone,
           operating_hours,
           administrator_userID,
-          status: "Active",
+          status: true,
           /*           Center_Material: {
             connect: Center_Material,
           }, */
@@ -193,7 +211,7 @@ class centerService {
           phone,
           operating_hours,
           administrator_userID,
-          status: "Active",
+          status: true,
         },
       });
 
