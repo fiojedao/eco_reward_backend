@@ -21,4 +21,6 @@ router.put('/update/status/:id', userController.updateUserStatus);
 
 router.put('/:id', userController.updateUser);
 
+router.put('/change/:id', userController.changePassword);
+
 module.exports = router;

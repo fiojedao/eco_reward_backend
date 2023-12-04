@@ -34,6 +34,7 @@ class userService {
     try {
       const { name, email, password, identification, phone, role } = body;
       const hashedPassword = await bcrypt.hash(password, 10);
+  
       const newUser = await prisma.user.create({
         data: {
           name,
@@ -42,13 +43,31 @@ class userService {
           identification,
           phone,
           status: true,
-          role: role
+          role: role,
         },
       });
   
-      return newUser;
+      const newAddress = await prisma.addresses.create({
+        data: {
+          provinceId: null,
+          province: body.province,
+          cantonId: null,
+          canton: body.canton,
+          districtId: null,
+          district: body.district,
+          exact_address: "",
+        },
+      });
+      const newUserAddress = await prisma.user_Address.create({
+        data: {
+            addressID: newAddress.addressID,
+            userID: newUser.userID
+        },
+      });
+  
+      return newUser
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw new Error(`Error creating user: ${error.message}`);
     }
   }
@@ -139,6 +158,47 @@ class userService {
       });
     } catch (error) {
       throw new Error(`Error fetching user by role: ${error.message}`);
+    }
+  }
+
+  async changePassword(id, credentials) {
+    try {
+      const { currentPassword, newPassword } = credentials;
+  
+      // Busca el usuario por su ID
+      const user = await prisma.user.findUnique({
+        where: {
+          userID: id,
+        },
+      });
+  
+      if (!user) {
+        throw new Error('Usuario no encontrado');
+      }
+  
+      // Verifica si la contraseña actual coincide con la almacenada en la base de datos
+      const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+  
+      if (!passwordMatch) {
+        throw new Error('La contraseña actual no es válida');
+      }
+  
+      // Encripta la nueva contraseña
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+  
+      // Actualiza la contraseña del usuario
+      await prisma.user.update({
+        where: {
+          userID: id,
+        },
+        data: {
+          password: hashedPassword,
+        },
+      });
+  
+      return { message: 'Contraseña actualizada correctamente' };
+    } catch (error) {
+      throw error;
     }
   }
 

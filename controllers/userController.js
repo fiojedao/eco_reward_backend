@@ -31,6 +31,18 @@ module.exports.updateUserStatus = async (request, response, next) => {
   }
 };
 
+module.exports.changePassword = async (request, response, next) => {
+  try {
+    const id = Number(request.params.id);
+    const body = request.body;
+    console.log(id, body);
+    const users = await userService.changePassword(id, body);
+    response.json(users);
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
+};
+
 module.exports.updateUser = async (request, response, next) => {
     try {
       const id = Number(request.params.id);
