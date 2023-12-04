@@ -19,4 +19,6 @@ router.post('/login/', userController.login);
 
 router.put('/update/status/:id', userController.updateUserStatus);
 
+router.put('/:id', userController.updateUser);
+
 module.exports = router;

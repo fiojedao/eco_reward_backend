@@ -31,6 +31,17 @@ module.exports.updateUserStatus = async (request, response, next) => {
   }
 };
 
+module.exports.updateUser = async (request, response, next) => {
+    try {
+      const id = Number(request.params.id);
+      const body = request.body;
+      const users = await userService.updateUser(id, body);
+      response.json(users);
+    } catch (error) {
+      response.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 module.exports.login = async (request, response, next) => {
   try {
     const userBody = request.body;

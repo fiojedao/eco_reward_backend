@@ -101,6 +101,30 @@ class userService {
       throw new Error(`Error creating users: ${error.message}`);
     }
   }
+
+  async updateUser(id, dataToUpdate) {
+    try {
+      const body = {
+        email:dataToUpdate.email,
+        identification:dataToUpdate.identification,
+        name:dataToUpdate.name,
+        phone:dataToUpdate.phone,
+        status:dataToUpdate.status
+      }
+      console.log(body);
+      const updatedUser = await prisma.user.update({
+        where: { userID: id },
+        data: body
+      });
+      console.log(updatedUser);
+  
+      return updatedUser;
+    } catch (error) {
+      console.error(error);
+      throw new Error(`Error updating user: ${error.message}`);
+    }
+  }
+  
   
 
   async getUserByRole(role) {
