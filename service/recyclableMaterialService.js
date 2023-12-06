@@ -171,6 +171,23 @@ class recyclableMaterialService {
       throw new Error(`Error deleting recyclable material: ${error.message}`);
     }
   }
+
+  async checkColorExists(colorRepresentation) {
+    try {
+      const material = await prisma.recyclable_Material.findFirst({
+        where: {
+          color_representation: `#${colorRepresentation}`,
+        },
+        select: {
+          color_representation: true,
+        },
+      });
+  
+      return !!material;
+    } catch (error) {
+      throw new Error(`Error checking color existence: ${error.message}`);
+    }
+  }
 }
 
 module.exports = recyclableMaterialService;

@@ -7,6 +7,8 @@ router.get("/", recyclableMaterialController.get);
 
 router.get("/:id", recyclableMaterialController.getById);
 
+router.get("/checkcolor/:color", recyclableMaterialController.getValidateColor);
+
 router.get("/center/:id", recyclableMaterialController.getMaterialByCenter);
 
 router.post("/", recyclableMaterialController.create);

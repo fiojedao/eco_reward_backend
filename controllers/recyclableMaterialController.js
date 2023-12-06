@@ -28,6 +28,23 @@ module.exports.getById = async (request, response, next) => {
   }
 };
 
+module.exports.getValidateColor = async (request, response, next) => {
+  console.log(request.params.color)
+  const color = request.params.color;
+  try {
+    const material = await recyclableMaterialService.checkColorExists(color);
+
+    if (!material) {
+      return response.status(404).json({ error: 'Recyclable material not found' });
+    }
+
+    response.json(material);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.getMaterialByCenter = async (request, response, next) => {
   const centerId = parseInt(request.params.id);
 
