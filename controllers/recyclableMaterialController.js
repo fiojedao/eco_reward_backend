@@ -28,6 +28,23 @@ module.exports.getById = async (request, response, next) => {
   }
 };
 
+module.exports.getValidateColor = async (request, response, next) => {
+  console.log(request.params.color)
+  const color = request.params.color;
+  try {
+    const material = await recyclableMaterialService.checkColorExists(color);
+
+    if (!material) {
+      return response.status(404).json({ error: 'Recyclable material not found' });
+    }
+
+    response.json(material);
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.getMaterialByCenter = async (request, response, next) => {
   const centerId = parseInt(request.params.id);
 
@@ -76,37 +93,6 @@ module.exports.delete = async (request, response, next) => {
   try {
     const deletedMaterial = await recyclableMaterialService.deleteMaterial(materialId);
     response.json(deletedMaterial);
-  } catch (error) {
-    console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-module.exports.update = async (request, response, next) => {
-  const materialId = parseInt(request.params.id);
-  const materialData = request.body;
-
-  try {
-    const image = request.file;
-
-    materialData.image = image;
-
-    const updatedMaterial = await recyclableMaterialService.updateMaterialWithImage(materialId, materialData);
-    response.json(updatedMaterial);
-  } catch (error) {
-    console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-module.exports.Upload = async (request, response, next) => {
-  const materialId = parseInt(request.params.id);
-
-  try {
-    const image = request.file;
-
-    const updatedMaterial = await recyclableMaterialService.uploadMaterialImage(materialId, image);
-    response.json(updatedMaterial);
   } catch (error) {
     console.error(error.message);
     response.status(500).json({ error: 'Internal Server Error' });
