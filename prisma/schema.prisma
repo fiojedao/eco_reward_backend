@@ -76,7 +76,7 @@ model Recyclable_Material {
   materialID           Int                         @id @default(autoincrement())
   name                 String
   description          String?
-  image                String?
+  image                Bytes?
   unit_of_measure      String?
   price                Float?
   color_representation String?
@@ -119,7 +119,7 @@ model Coupon_Exchange {
   couponID                Int                       @id @default(autoincrement())
   name                    String
   description             String?
-  image                   String?
+  image                   Bytes?
   category                String?
   start_validity_date     DateTime?
   end_validity_date       DateTime?
