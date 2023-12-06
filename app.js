@@ -5,6 +5,10 @@ const { request, response } = require("express");
 const cors = require("cors");
 const logger = require("morgan");
 const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({ limit: '50mb' })); // Ajusta el límite de tamaño para JSON
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // Ajusta el límite de tamaño para URL-encoded
+
 
 // Configurar una ruta para servir imágenes estáticas desde la carpeta
 //app.use("/images", express.static(__dirname + "/images"));
