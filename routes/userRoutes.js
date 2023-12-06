@@ -9,6 +9,8 @@ router.get("/validateEmail/:email", userController.existUser);
 
 router.get("/role/:id", userController.getUserByRole);
 
+router.get("/whithout/:id", userController.getUsersWithoutCenter);
+
 router.get("/:id", userController.getById);
 
 router.get('/:id/coupons', userController.getUserCouponExchange);

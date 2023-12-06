@@ -85,6 +85,16 @@ module.exports.getUserByRole = async (request, response, next) => {
   }
 };
 
+module.exports.getUsersWithoutCenter = async (request, response, next) => {
+  try {
+    const id = parseInt(request.params.id);
+    const administrators = await userService.getUsersWithoutCenter(id);
+    response.json(administrators);
+  } catch (error) {
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports.getById = async (request, response, next) => {
   const id = parseInt(request.params.id);
 

@@ -161,6 +161,23 @@ class userService {
     }
   }
 
+  async getUsersWithoutCenter(role) {
+    try {
+      return await prisma.user.findMany({
+        where: {
+          role: role,
+          Recycling_Center: {
+            none: {} 
+          }
+        },
+        orderBy: {
+          role: 'asc'
+        }
+      });
+    } catch (error) {
+      throw new Error(`Error fetching users without center: ${error.message}`);
+    }
+  }
   async changePassword(id, credentials) {
     try {
       const { currentPassword, newPassword } = credentials;
