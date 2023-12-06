@@ -1,4 +1,4 @@
-const CouponExchangeService = require('../service/couponExchangeService');
+const CouponExchangeService = require("../service/couponExchangeService");
 const couponExchangeService = new CouponExchangeService();
 
 module.exports.getAllCoupons = async (request, response, next) => {
@@ -7,7 +7,7 @@ module.exports.getAllCoupons = async (request, response, next) => {
     response.json(coupons);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -18,13 +18,13 @@ module.exports.getCouponById = async (request, response, next) => {
     const coupon = await couponExchangeService.getCouponById(couponId);
 
     if (!coupon) {
-      return response.status(404).json({ error: 'Coupon not found' });
+      return response.status(404).json({ error: "Coupon not found" });
     }
 
     response.json(coupon);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -36,7 +36,7 @@ module.exports.createCoupon = async (request, response, next) => {
     response.json(newCoupon);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -45,16 +45,19 @@ module.exports.updateCoupon = async (request, response, next) => {
   const updatedCouponData = request.body;
 
   try {
-    const updatedCoupon = await couponExchangeService.updateCoupon(couponId, updatedCouponData);
+    const updatedCoupon = await couponExchangeService.updateCoupon(
+      couponId,
+      updatedCouponData
+    );
 
     if (!updatedCoupon) {
-      return response.status(404).json({ error: 'Coupon not found' });
+      return response.status(404).json({ error: "Coupon not found" });
     }
 
     response.json(updatedCoupon);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -65,12 +68,12 @@ module.exports.deleteCoupon = async (request, response, next) => {
     const deletedCoupon = await couponExchangeService.deleteCoupon(couponId);
 
     if (!deletedCoupon) {
-      return response.status(404).json({ error: 'Coupon not found' });
+      return response.status(404).json({ error: "Coupon not found" });
     }
 
     response.json(deletedCoupon);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: "Internal Server Error" });
   }
 };

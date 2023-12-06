@@ -1,4 +1,4 @@
-const { prisma, bcrypt } = require('./../prisma/client/index');
+const { prisma, bcrypt } = require("./../prisma/client/index");
 
 class couponExchangeHistoryService {
   async getAllCouponExchangeHistory() {
@@ -10,7 +10,9 @@ class couponExchangeHistoryService {
         },
       });
     } catch (error) {
-      throw new Error(`Error fetching all Coupon Exchange History: ${error.message}`);
+      throw new Error(
+        `Error fetching all Coupon Exchange History: ${error.message}`
+      );
     }
   }
 
@@ -26,7 +28,9 @@ class couponExchangeHistoryService {
         },
       });
     } catch (error) {
-      throw new Error(`Error fetching Coupon Exchange History by ID: ${error.message}`);
+      throw new Error(
+        `Error fetching Coupon Exchange History by ID: ${error.message}`
+      );
     }
   }
 
@@ -42,7 +46,9 @@ class couponExchangeHistoryService {
         },
       });
     } catch (error) {
-      throw new Error(`Error fetching Coupon Exchange History by Client User ID: ${error.message}`);
+      throw new Error(
+        `Error fetching Coupon Exchange History by Client User ID: ${error.message}`
+      );
     }
   }
 }
