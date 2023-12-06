@@ -3,9 +3,17 @@ const { prisma, bcrypt } = require('./../prisma/client/index');
 class CouponExchangeService {
   async getAllCoupons() {
     try {
-      const coupons = await prisma.Coupon_Exchange.findMany();
-      
-      const couponsWithBase64Images = coupons.map(coupon => {
+      const currentDate = new Date();
+      const validCoupons = await prisma.Coupon_Exchange.findMany({
+        where: {
+          end_validity_date: {
+            // Filtrar aquellos cupones con fecha de expiración superior a la fecha actual
+            gte: currentDate,
+          },
+        },
+      });
+  
+      const couponsWithBase64Images = validCoupons.map(coupon => {
         if (coupon.image) {
           const base64Image = Buffer.from(coupon.image).toString('base64');
           return { ...coupon, imageBase64: base64Image };
@@ -16,7 +24,7 @@ class CouponExchangeService {
   
       return couponsWithBase64Images;
     } catch (error) {
-      throw new Error(`Error fetching all coupons: ${error.message}`);
+      throw new Error(`Error fetching valid coupons: ${error.message}`);
     }
   }
 
