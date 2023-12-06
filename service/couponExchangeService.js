@@ -44,7 +44,6 @@ class CouponExchangeService {
     try {
       const base64Image = image.replace(/^data:image\/\w+;base64,/, '');
 
-      // Decodificar los datos base64 a bytes
       const imageBuffer = Buffer.from(base64Image, 'base64');
       return await prisma.Coupon_Exchange.create({
         data: {

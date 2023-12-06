@@ -81,34 +81,3 @@ module.exports.delete = async (request, response, next) => {
     response.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
-module.exports.update = async (request, response, next) => {
-  const materialId = parseInt(request.params.id);
-  const materialData = request.body;
-
-  try {
-    const image = request.file;
-
-    materialData.image = image;
-
-    const updatedMaterial = await recyclableMaterialService.updateMaterialWithImage(materialId, materialData);
-    response.json(updatedMaterial);
-  } catch (error) {
-    console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-module.exports.Upload = async (request, response, next) => {
-  const materialId = parseInt(request.params.id);
-
-  try {
-    const image = request.file;
-
-    const updatedMaterial = await recyclableMaterialService.uploadMaterialImage(materialId, image);
-    response.json(updatedMaterial);
-  } catch (error) {
-    console.error(error.message);
-    response.status(500).json({ error: 'Internal Server Error' });
-  }
-};
